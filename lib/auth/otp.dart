@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class otppage extends StatelessWidget {
-  const otppage({Key? key}) : super(key: key);
+  final String phoneNumber;
+  otppage({required this.phoneNumber});
 
 
   @override
@@ -35,7 +36,7 @@ class otppage extends StatelessWidget {
                 ),
                 Text('Verification'.toUpperCase()),
                 SizedBox(height: 40,),
-                Text('Enter vertification code sent at ' +" support@foodie.com",textAlign: TextAlign.center,),
+                Text('Enter vertification code sent at ' +"+91 $phoneNumber",textAlign: TextAlign.center,),
                 SizedBox(height: 20,),
             
                 OtpTextField(
@@ -57,7 +58,10 @@ class otppage extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black
                     ),
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.of(context).pushNamed('/nav');
+
+                    },
                     child: Text("NEXT",style: TextStyle(
                       color: Colors.blue.shade50
                     ),),
