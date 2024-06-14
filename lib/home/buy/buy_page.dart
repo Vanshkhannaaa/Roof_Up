@@ -18,7 +18,7 @@ class _BuyPageState extends State<BuyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(name: 'Buy',),
+      appBar: CustomAppBar(name: 'Buy',home: false),
       body: Stack(
           children: [
             SingleChildScrollView(

@@ -48,47 +48,49 @@ class _PhoneLoginState extends State<PhoneLogin> {
         child: Form(
             child: Container(
 
-              padding: EdgeInsets.symmetric(vertical: 30,horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(child: Image(image: AssetImage("assets/images/logo.png"),height: 150,)),
-                  SizedBox(height: 30,),
-                  Text('Welcome Back,',style:TextStyle(fontSize:35,fontWeight:  FontWeight.bold)),
-                  Text('Make is work,make it right, make it fast'),
-                  SizedBox(height: 30,),
-                  TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                      autofocus: true,
-                      cursorColor: Colors.blue,
-                      decoration:  InputDecoration(
-                          prefixIcon: Icon(Icons.phone),
-                          labelText: "Phone Number",
-                          hintText: "Phone-No",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-
-                          )
-                      )
-                  ),
-                  SizedBox(height: 15,),
-
-                  const SizedBox(height: 20,),
-                  SizedBox(
-                      width: double.infinity,
-                      child:
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                          ),
-                          onPressed: _navigateToOtpPage,
-                          child: Text('Send Otp'.toUpperCase(),style: TextStyle(color: Colors.white),)
-                      )
-                  )
-
-                ],
+              padding: EdgeInsets.symmetric(vertical: 80,horizontal: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(child: Image(image: AssetImage("assets/images/logo.png"),height: 150,)),
+                    SizedBox(height: 30,),
+                    Text('Welcome Back,',style:TextStyle(fontSize:35,fontWeight:  FontWeight.bold)),
+                    Text('Make is work,make it right, make it fast'),
+                    SizedBox(height: 30,),
+                    TextFormField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        autofocus: true,
+                        cursorColor: Colors.blue,
+                        decoration:  InputDecoration(
+                            prefixIcon: Icon(Icons.phone),
+                            labelText: "Phone Number",
+                            hintText: "Phone-No",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                
+                            )
+                        )
+                    ),
+                    SizedBox(height: 15,),
+                
+                    const SizedBox(height: 20,),
+                    SizedBox(
+                        width: double.infinity,
+                        child:
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                            ),
+                            onPressed: _navigateToOtpPage,
+                            child: Text('Send Otp'.toUpperCase(),style: TextStyle(color: Colors.white),)
+                        )
+                    )
+                
+                  ],
+                ),
               ),
             )
 

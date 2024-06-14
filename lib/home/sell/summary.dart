@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roof_up/Common/appBar.dart';
 
 class Summary extends StatefulWidget {
   const Summary({super.key});
@@ -10,6 +11,11 @@ class Summary extends StatefulWidget {
 class _SummaryState extends State<Summary> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: CustomAppBar(
+        name: 'Summary',
+        home: false,
+      ),
+    );
   }
 }

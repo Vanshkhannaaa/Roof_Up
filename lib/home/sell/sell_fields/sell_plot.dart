@@ -12,10 +12,17 @@ class SellPlot extends StatefulWidget {
 }
 
 class _SellPlotState extends State<SellPlot> {
+  TextEditingController AreaController = TextEditingController();
+  TextEditingController RateController = TextEditingController();
+  TextEditingController ValueController = TextEditingController();
+  TextEditingController LoanController = TextEditingController();
+  TextEditingController PurchaseController = TextEditingController();
+  TextEditingController MobileController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(name: 'Sell'),
+      appBar: CustomAppBar(name: 'Sell',home: false),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0,left: 20,right: 20),
         child: SafeArea(
@@ -23,34 +30,43 @@ class _SellPlotState extends State<SellPlot> {
             child: Column(
               children: [
                 CustomTextField(
+                  controller: RateController,
                     title: 'Rate ',
                     hint: 'Enter Rate',
                     type: TextInputType.number),
 
                 SizedBox(height: 10,),
 
-                CustomTextField(
-                    title: 'Area',
-                    hint: 'Enter Area',
-                    type: TextInputType.number),
+                AreaField(controller: AreaController),
 
                 SizedBox(height: 10,),
 
                 CustomTextField(
+                  controller: ValueController,
                     title: 'Estimated Value (in \u20b9)',
                     hint: 'Enter value',
                     type: TextInputType.number),
 
                 SizedBox(height: 10,),
 
-                CustomTextField(
+                CustomDropdown(
                     title: 'Facing',
-                    hint: 'Facing ',
-                    type: TextInputType.text),
+                    hint: 'Select Facing',
+                    options: [
+                      'North',
+                      'South',
+                      'West',
+                      'East',
+                      'North-East',
+                      'North-West',
+                      'South-East',
+                      'South-West',
+                    ]),
 
                 SizedBox(height: 10,),
 
                 CustomTextField(
+                  controller: LoanController,
                     title: 'Estimated Mortgage',
                     hint: 'Enter mortgage',
                     type: TextInputType.text),
@@ -58,6 +74,7 @@ class _SellPlotState extends State<SellPlot> {
                 SizedBox(height: 10,),
 
                 CustomTextField(
+                  controller: PurchaseController,
                     title: 'Year purchased',
                     hint: 'Enter year',
                     type: TextInputType.number),
@@ -65,6 +82,7 @@ class _SellPlotState extends State<SellPlot> {
                 SizedBox(height: 10,),
 
                 CustomTextField(
+                  controller: MobileController,
                     title: 'Mobile No.',
                     hint: 'Enter mobile no.',
                     type: TextInputType.number),

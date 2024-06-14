@@ -66,7 +66,6 @@ class _PropertySliderState extends State<PropertySlider> {
                     },
                 ),
                 carouselController: _carouselController,
-
               ),
               Positioned(
                 bottom: 0, // Align at the bottom

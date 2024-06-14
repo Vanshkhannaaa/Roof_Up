@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/splash_screen.dart';
-
 import 'auth/otp.dart';
 import 'home/Installments/installment_calculator.dart';
 import 'home/Installments/installment_page.dart';
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Property App',
+      title: 'Roof Up',
       theme: ThemeData(
           fontFamily: GoogleFonts.montserrat().fontFamily
       ),
@@ -51,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/installment': (context) => const InstallmentPage(),
         '/calculator': (context) => const Calculator(),
         '/sell': (context) => const SellPage(),
-        '/otp': (context) => const otppage(),
+        '/otp': (context) => otppage(phoneNumber: "phoneNumber"),
         '/sellplot': (context) => const SellPlot(),
         '/sellhouse': (context) => const SellHouse(),
         '/sellshop': (context) => const SellShop(),

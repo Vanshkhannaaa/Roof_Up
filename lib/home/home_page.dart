@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(name: 'Property Advisor'),
+      appBar: CustomAppBar(name: 'Roof Up',home: true,),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: SafeArea(

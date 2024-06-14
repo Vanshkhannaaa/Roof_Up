@@ -15,7 +15,7 @@ class _InstallmentPageState extends State<InstallmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(name: 'Installments',),
+      appBar: CustomAppBar(name: 'Installments',home: false),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: SafeArea(

@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:roof_up/auth/phone_login.dart';
 import 'nav_page.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -32,8 +33,7 @@ class SplashScreen extends StatelessWidget {
                   'assets/animations/building2.json',
                 ),
                 SizedBox(height: 20),
-                Text(
-                  'Property Advisor',
+                Text('ROOF UP',
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w600,
@@ -43,8 +43,8 @@ class SplashScreen extends StatelessWidget {
               ],
             ),
           ),
-          nextScreen: NavPage(),
-          duration: 3000,
+          nextScreen: PhoneLogin(),
+          duration: 2500,
           splashIconSize: 500,
           splashTransition: SplashTransition.fadeTransition,
           backgroundColor: Colors.transparent, // Set transparent to let the gradient show

@@ -16,7 +16,7 @@ class _CalculatorState extends State<Calculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(name: 'Calculator'),
+      appBar: CustomAppBar(name: 'Calculator',home: false,),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0,left: 20,right: 20),
         child: SafeArea(

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String? name;
-  const CustomAppBar({super.key, required this.name});
+  final String name;
+  final bool home;
+  const CustomAppBar({super.key, required this.name,required this.home});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: !home,
       flexibleSpace: Container(
         decoration: BoxDecoration(
           boxShadow: [

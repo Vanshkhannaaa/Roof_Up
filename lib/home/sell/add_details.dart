@@ -18,7 +18,7 @@ class _AddDetailsState extends State<AddDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(name: 'Sell',),
+      appBar: CustomAppBar(name: 'Sell',home: false,),
       body: Padding(
         padding: EdgeInsets.only(top: 20.0,left: 20,right: 20),
         child: SafeArea(
@@ -116,7 +116,9 @@ class _AddDetailsState extends State<AddDetails> {
                 ),
                 SizedBox(height: 10),
                 CustomButton(name: 'Submit',
-                    onpressed:(){}
+                    onpressed:(){
+                  Navigator.pushNamed(context,'/summary');
+                    }
                 )
               ],
             ),

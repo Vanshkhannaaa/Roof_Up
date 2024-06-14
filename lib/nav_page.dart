@@ -32,7 +32,7 @@ class _NavPageState extends State<NavPage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: CustomLineIndicatorBottomNavbar(
-        selectedColor: Colors.blue,
+        selectedColor: Colors.blue.shade800,
         unSelectedColor: Colors.black54,
         backgroundColor: Colors.white,
         currentIndex: _selectedIndex,

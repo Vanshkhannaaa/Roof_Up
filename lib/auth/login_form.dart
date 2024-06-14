@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../common/textfield.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({
     Key? key,
@@ -44,8 +44,6 @@ class _LoginFormState extends State<LoginForm> {
   TextEditingController loginIDController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
-
-
   bool _obscureText = true;
   bool showLoader = false;
 
@@ -58,7 +56,6 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     bool _obscureText =true;
     return Form(
-
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 30),
           child: Column(
@@ -114,7 +111,6 @@ class _LoginFormState extends State<LoginForm> {
                       }, child: Text('login'.toUpperCase(),style: TextStyle(color: Colors.white),)
                   )
                   )
-
             ],
           ),
         )

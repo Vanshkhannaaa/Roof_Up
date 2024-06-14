@@ -14,7 +14,7 @@ class _SellPageState extends State<SellPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(name: 'Sell'),
+      appBar: CustomAppBar(name: 'Sell',home:false),
       body: Stack(
         children: [
           SingleChildScrollView(
