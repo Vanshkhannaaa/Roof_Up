@@ -47,35 +47,39 @@ class _PropertySliderState extends State<PropertySlider> {
       ),
       child: Column(
         children: [
-          Stack(
-            children: [
-              CarouselSlider(
-                items: imgList.map((item) => _buildCarouselItem(context, item)).toList(),
-                options: CarouselOptions(
-                    height: 170.0,
-                    aspectRatio: 2,
-                    viewportFraction: 0.8,
-                    initialPage: 1,
-                    autoPlayInterval: const Duration(seconds: 5),
-                    autoPlayCurve: Curves.fastEaseInToSlowEaseOut,
-                    autoPlay: true,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
+          InkWell(
+            onTap: (){
+              Navigator.pushNamed(context, '/slider');
+            },
+            child: Stack(
+              children: [
+                CarouselSlider(
+                  items: imgList.map((item) => _buildCarouselItem(context, item)).toList(),
+                  options: CarouselOptions(
+                      height: 170.0,
+                      aspectRatio: 2,
+                      viewportFraction: 0.8,
+                      initialPage: 1,
+                      autoPlayInterval: const Duration(seconds: 5),
+                      autoPlayCurve: Curves.fastEaseInToSlowEaseOut,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                  ),
+                  carouselController: _carouselController,
                 ),
-                carouselController: _carouselController,
-              ),
-              Positioned(
-                bottom: 0, // Align at the bottom
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: _buildDotIndicator(),
+                Positioned(
+                  bottom: 0, // Align at the bottom
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: _buildDotIndicator(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
 
           Padding(
@@ -137,7 +141,6 @@ class _PropertySliderState extends State<PropertySlider> {
                         child: Text('Call',
                           style: TextStyle(
                             color: Colors.white,
-
                           ),
                         )
                     )

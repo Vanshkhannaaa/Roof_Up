@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:roof_up/home/buy/feed/photo_slider.dart';
 import 'package:roof_up/splash_screen.dart';
 import 'auth/otp.dart';
 import 'home/Installments/installment_calculator.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         '/sellhall': (context) => const SellHalls(),
         '/details': (context) => const AddDetails(),
         '/summary': (context) => const Summary(),
+        '/slider': (context) => PhotoSlider(),
 
       },
     );
