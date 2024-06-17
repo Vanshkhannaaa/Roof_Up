@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeContainer extends StatelessWidget {
   final String? name;
@@ -54,3 +55,31 @@ class HomeContainer extends StatelessWidget {
     );
   }
 }
+
+
+class RowValue extends StatelessWidget {
+  final String title;
+  final String value;
+  const RowValue({super.key,required this.title,required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('${title} :',
+          style: TextStyle(
+              fontFamily:GoogleFonts.kanit().fontFamily,
+              fontSize: 16
+          ),
+        ),
+        Text(value,
+          style: TextStyle(
+              fontSize: 16
+          ),
+        )
+      ],
+    );
+  }
+}
+

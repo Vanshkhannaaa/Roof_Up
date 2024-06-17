@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "809847024730",
+    "project_id": "propertyapp-c8111",
+    "storage_bucket": "propertyapp-c8111.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809847024730:android:0acce9bebfd72b9e0efc63",
+        "android_client_info": {
+          "package_name": "com.auribises.property_dealer_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809847024730-qpgniqjqfmda1rfvgf45m8tgaohinuvi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrpg2cN-KKEieLZ9k7fdxyhhb_R3IeTRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809847024730-qpgniqjqfmda1rfvgf45m8tgaohinuvi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "809847024730-g6a35mq6s5rotpg7c3hspiuvt0o73ojg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.auribises.propertyDealerApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809847024730:android:279fe2a588783d230efc63",
+        "android_client_info": {
+          "package_name": "com.auribises.roof_up"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809847024730-qpgniqjqfmda1rfvgf45m8tgaohinuvi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrpg2cN-KKEieLZ9k7fdxyhhb_R3IeTRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809847024730-qpgniqjqfmda1rfvgf45m8tgaohinuvi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "809847024730-g6a35mq6s5rotpg7c3hspiuvt0o73ojg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.auribises.propertyDealerApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

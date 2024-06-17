@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/Common/TextField.dart';
 import 'otp.dart';
@@ -12,25 +14,61 @@ class PhoneLogin extends StatefulWidget {
 class _PhoneLoginState extends State<PhoneLogin> {
   final _phoneController = TextEditingController();
 
-  void _navigateToOtpPage() {
+  void _verifyPhoneNumber() async {
     final phoneNumber = _phoneController.text;
-    if (phoneNumber.isNotEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => otppage(phoneNumber: phoneNumber),
-        ),
-      );
-    } else {
-      // Show error if phone number is empty
+    if (phoneNumber.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please enter a phone number')),
       );
+    } else if (phoneNumber.length != 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter valid phone number')),
+      );
+    } else {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: '+91${_phoneController.text.toString()}',
+        verificationCompleted: (PhoneAuthCredential credential) {},
+        verificationFailed: (FirebaseAuthException e) {
+          // Handle failure
+          print('Failed to verify phone number: ${e.message}');
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => otppage(
+                phoneNumber: _phoneController.text,
+                verificationId: verificationId,
+              )));
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
     }
   }
-  Widget build(BuildContext context) {
 
-    bool _obscureText =true;
+  // void _navigateToOtpPage() {
+  //   final phoneNumber = _phoneController.text;
+  //
+  //   if (phoneNumber.isEmpty) {
+  //     // Show error if phone number is empty
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Please enter a phone number')),
+  //     );
+  //   } else if (phoneNumber.length < 10) {
+  //     // Show error if phone number is less than 10 digits
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Please enter a valid phone number')),
+  //     );
+  //   } else {
+  //     // Navigate to the OTP page if the phone number is valid
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => otppage(phoneNumber: phoneNumber),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  Widget build(BuildContext context) {
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -53,7 +91,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
                 Text('OTP Verification',
                   style:TextStyle(
                     fontSize:20,
-                    fontWeight:FontWeight.w600,
                     fontFamily: GoogleFonts.kanit().fontFamily
                   )
                 ),
@@ -64,22 +101,21 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   ),
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 20),
 
                 Container(
                   width: MediaQuery.of(context).size.width,
                   color: Colors.white60,
                   child: TextField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10),
+                    ],
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     cursorColor: Colors.blue.shade800,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                        hintText: 'Enter Phone Number',
-                        hintStyle: TextStyle(
-                            color: Colors.grey.shade400,
-                            fontSize: 14
-                        ),
                         labelText: 'Phone Number',
                         labelStyle: TextStyle(
                           fontSize: 14,
@@ -87,7 +123,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                         ),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.grey.shade700)
+                            borderSide: BorderSide(color: Colors.grey.shade400)
                         ),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -100,7 +136,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
                 SizedBox(height: 20),
 
                 CustomButton(name: 'Continue', onpressed: (){
-                  _navigateToOtpPage();
+                  // _navigateToOtpPage();
+                  _verifyPhoneNumber();
                 }),
 
                 SizedBox(height: 20),

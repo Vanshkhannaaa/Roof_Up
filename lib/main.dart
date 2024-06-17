@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/home/buy/feed/photo_slider.dart';
 import 'package:roof_up/splash_screen.dart';
 import 'auth/otp.dart';
+import 'firebase_options.dart';
 import 'home/Installments/installment_calculator.dart';
 import 'home/Installments/installment_page.dart';
 import 'home/buy/Plot/plot_page.dart';
@@ -20,11 +22,12 @@ import 'home/sell/sell_page.dart';
 import 'home/sell/summary.dart';
 import 'nav_page.dart';
 
-Future<void> main() async {
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(const MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -51,7 +54,7 @@ class MyApp extends StatelessWidget {
         '/installment': (context) => const InstallmentPage(),
         '/calculator': (context) => const Calculator(),
         '/sell': (context) => const SellPage(),
-        '/otp': (context) => otppage(phoneNumber: "phoneNumber"),
+        // '/otp': (context) => otppage(phoneNumber: "phoneNumber"),
         '/sellplot': (context) => const SellPlot(),
         '/sellhouse': (context) => const SellHouse(),
         '/sellshop': (context) => const SellShop(),

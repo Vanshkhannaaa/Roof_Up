@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/Common/TextField.dart';
 import 'package:roof_up/Common/appBar.dart';
+import 'package:roof_up/Common/home_container.dart';
 
 class Summary extends StatefulWidget {
   const Summary({super.key});
-
   @override
   State<Summary> createState() => _SummaryState();
 }
@@ -27,55 +27,68 @@ class _SummaryState extends State<Summary> {
     return Scaffold(
       appBar: CustomAppBar(name: 'Summary', home: false,),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Stack(
-              children: [
-                CarouselSlider(
-                  items: imgList.map((item) => _buildCarouselItem(context, item)).toList(),
-                  options: CarouselOptions(
-                    height: 170.0,
-                    aspectRatio: 2,
-                    viewportFraction: 1,
-                    initialPage: 0,
-                    autoPlayInterval: const Duration(seconds: 5),
-                    autoPlayCurve: Curves.fastEaseInToSlowEaseOut,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Stack(
+                children: [
+                  CarouselSlider(
+                    items: imgList.map((item) => _buildCarouselItem(context, item)).toList(),
+                    options: CarouselOptions(
+                      height: 170.0,
+                      aspectRatio: 2,
+                      viewportFraction: 1,
+                      initialPage: 0,
+                      autoPlayInterval: const Duration(seconds: 5),
+                      autoPlayCurve: Curves.fastEaseInToSlowEaseOut,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                    ),
+                    carouselController: _carouselController,
                   ),
-                  carouselController: _carouselController,
-                ),
-                Positioned(
-                  bottom: 0, // Align at the bottom
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: _buildDotIndicator(),
+                  Positioned(
+                    bottom: 0, // Align at the bottom
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: _buildDotIndicator(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
-              child: Column(
+                ],
+              ),
+              SizedBox(height: 10),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.circle,color: Colors.green.shade800,),
-                      SizedBox(width: 5,),
-                      const Text("For Sale",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade50,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          color: Colors.green.shade800,
+                          size: 20,
                         ),
-                      ),
-
-                    ],
+                        SizedBox(width: 5,),
+                        Text("For Sale",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 5),
                   Text(
@@ -86,84 +99,80 @@ class _SummaryState extends State<Summary> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Area : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('250 sqft',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'Area',
+                      value: '250 sqft'
                   ),
-                  SizedBox(height: 5,),Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Estimated Value : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('\u20b9 50,00,000',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'Estimated Value',
+                      value: '\u20b9 50,00,000'
                   ),
-                  SizedBox(height: 5,),Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Facing : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('North',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'Facing',
+                      value: 'North'
                   ),
-                  SizedBox(height: 5,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Year purchased : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('2005',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'Year purchased',
+                      value: '2005'
                   ),
-                  SizedBox(height: 5,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Total Floors : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('2',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'Total Floors',
+                      value: '2'
                   ),
-                  SizedBox(height: 5,),
-                  Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Property on floor : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('1',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'Property on floor',
+                      value: '2'
                   ),
-                  SizedBox(height: 5,),Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('No. of bedrooms : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('5',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'No. of bedrooms',
+                      value: '5'
                   ),
-                  SizedBox(height: 5,),Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('No. of bathrooms : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('5',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'No. of bathrooms',
+                      value: '5'
                   ),
-                  SizedBox(height: 5,),Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Availability : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('Immediately Available',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'Availability',
+                      value: 'Immediately Available'
                   ),
-                  SizedBox(height: 5,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Furnishing Details : ',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                      Text('Fully furnished',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                    ],
+
+                  SizedBox(height: 5),
+
+                  RowValue(
+                      title: 'Furnishing Details',
+                      value: 'Fully furnished'
                   ),
-                  SizedBox(height: 10),
+
+                  SizedBox(height: 5),
+
                   Divider(),
+
                   SizedBox(height: 10),
 
                   Text("Nearby Landmark",
@@ -233,9 +242,9 @@ class _SummaryState extends State<Summary> {
 
                   CustomButton(name: 'Post', onpressed: (){}),
                 ],
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
