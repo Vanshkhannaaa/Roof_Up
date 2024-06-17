@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:roof_up/Common/TextField.dart';
 import 'otp.dart';
-
-
 
 class PhoneLogin extends StatefulWidget {
   const PhoneLogin({Key? key}) : super(key: key);
@@ -30,70 +29,85 @@ class _PhoneLoginState extends State<PhoneLogin> {
     }
   }
   Widget build(BuildContext context) {
+
     bool _obscureText =true;
-    return Material(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.white,
-              Colors.blue.shade200,
-            ],
-          ),
-        ),
 
-        child: Form(
-            child: Container(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal:25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 30),
 
-              padding: EdgeInsets.symmetric(vertical: 80,horizontal: 20),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(child: Image(image: AssetImage("assets/images/logo.png"),height: 150,)),
-                    SizedBox(height: 30,),
-                    Text('Welcome Back,',style:TextStyle(fontSize:35,fontWeight:  FontWeight.bold)),
-                    Text('Make is work,make it right, make it fast'),
-                    SizedBox(height: 30,),
-                    TextFormField(
-                        controller: _phoneController,
-                        keyboardType: TextInputType.phone,
-                        autofocus: true,
-                        cursorColor: Colors.blue,
-                        decoration:  InputDecoration(
-                            prefixIcon: Icon(Icons.phone),
-                            labelText: "Phone Number",
-                            hintText: "Phone-No",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                
-                            )
+                Center(
+                  child: Image.asset('assets/images/otp.png',
+                    height: MediaQuery.of(context).size.height*0.35,),
+                ),
+
+                SizedBox(height: 30),
+
+                Text('OTP Verification',
+                  style:TextStyle(
+                    fontSize:20,
+                    fontWeight:FontWeight.w600,
+                    fontFamily: GoogleFonts.kanit().fontFamily
+                  )
+                ),
+                Text('Enter phone number for OTP',
+                  style: TextStyle(
+                    color: Colors.grey.shade700,
+                    fontSize: 13
+                  ),
+                ),
+
+                SizedBox(height: 30),
+
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white60,
+                  child: TextField(
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
+                    cursorColor: Colors.blue.shade800,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                        hintText: 'Enter Phone Number',
+                        hintStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 14
+                        ),
+                        labelText: 'Phone Number',
+                        labelStyle: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade400
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.grey.shade700)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.blue.shade800)
                         )
                     ),
-                    SizedBox(height: 15,),
-                
-                    const SizedBox(height: 20,),
-                    SizedBox(
-                        width: double.infinity,
-                        child:
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                            ),
-                            onPressed: _navigateToOtpPage,
-                            child: Text('Send Otp'.toUpperCase(),style: TextStyle(color: Colors.white),)
-                        )
-                    )
-                
-                  ],
+                  ),
                 ),
-              ),
-            )
 
+                SizedBox(height: 20),
+
+                CustomButton(name: 'Continue', onpressed: (){
+                  _navigateToOtpPage();
+                }),
+
+                SizedBox(height: 20),
+
+              ],
+            ),
+          ),
         ),
       ),
     );
