@@ -285,8 +285,13 @@ class CustomDropdown extends StatefulWidget {
   final List<String> options;
   final String title;
   final String hint;
-  const CustomDropdown({super.key, required this.options,
-  required this.title,required this.hint});
+
+  const CustomDropdown(
+      {super.key,
+        required this.options,
+        required this.title,
+        required this.hint,
+        });
 
   @override
   State<CustomDropdown> createState() => _CustomDropdownState();
@@ -299,7 +304,8 @@ class _CustomDropdownState extends State<CustomDropdown> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text( widget.title,
+        Text(
+          widget.title,
           style: TextStyle(
             fontWeight: FontWeight.w500,
           ),
@@ -309,15 +315,16 @@ class _CustomDropdownState extends State<CustomDropdown> {
           padding: EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey.shade700),
-              borderRadius: BorderRadius.circular(10)
-          ),
+              borderRadius: BorderRadius.circular(10)),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              hint: Text(widget.hint,style: TextStyle(
-                  color: Colors.grey.shade400,
-                  fontSize: 14,
-                  fontFamily: GoogleFonts.montserrat().fontFamily
-              ),),
+              hint: Text(
+                widget.hint,
+                style: TextStyle(
+                    color: Colors.grey.shade400,
+                    fontSize: 14,
+                    fontFamily: GoogleFonts.montserrat().fontFamily),
+              ),
               value: _selectedValue,
               icon: Icon(Icons.keyboard_arrow_down),
               iconSize: 24,
@@ -329,12 +336,15 @@ class _CustomDropdownState extends State<CustomDropdown> {
                   _selectedValue = newValue;
                 });
               },
-              items: widget.options.map<DropdownMenuItem<String>>((String value) {
+              items:
+              widget.options.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value,style: TextStyle(
-                      fontFamily: GoogleFonts.montserrat().fontFamily
-                  ),),
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                        fontFamily: GoogleFonts.montserrat().fontFamily),
+                  ),
                 );
               }).toList(),
             ),

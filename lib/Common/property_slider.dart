@@ -137,8 +137,9 @@ class _PropertySliderState extends State<PropertySlider> {
                           ),
                         ),
                         onPressed: (){
+
                         },
-                        child: Text('Call',
+                        child: Text('Contact',
                           style: TextStyle(
                             color: Colors.white,
                           ),

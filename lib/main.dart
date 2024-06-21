@@ -54,17 +54,13 @@ class MyApp extends StatelessWidget {
         '/installment': (context) => const InstallmentPage(),
         '/calculator': (context) => const Calculator(),
         '/sell': (context) => const SellPage(),
-        // '/otp': (context) => otppage(phoneNumber: "phoneNumber"),
         '/sellplot': (context) => const SellPlot(),
         '/sellhouse': (context) => const SellHouse(),
         '/sellshop': (context) => const SellShop(),
         '/sellflat': (context) => const SellFlat(),
         '/guestroom': (context) => const SellGuestRoom(),
         '/sellhall': (context) => const SellHalls(),
-        '/details': (context) => const AddDetails(),
-        '/summary': (context) => const Summary(),
         '/slider': (context) => PhotoSlider(),
-
       },
     );
   }

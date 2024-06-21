@@ -10,6 +10,7 @@ class SellShop extends StatefulWidget {
 }
 
 class _SellShopState extends State<SellShop> {
+
   TextEditingController AreaController = TextEditingController();
   TextEditingController ValueController = TextEditingController();
   TextEditingController YearController = TextEditingController();
@@ -58,7 +59,7 @@ class _SellShopState extends State<SellShop> {
                     'South-West',
                 ]),
 
-                SizedBox(height: 10,),
+                SizedBox(height: 10),
 
                 CustomTextField(
                   controller: YearController,

@@ -6,7 +6,6 @@ class HomeContainer extends StatelessWidget {
   IconData? iconData;
   final VoidCallback? onTap;
 
-
   HomeContainer({super.key, required this.name,required this.iconData,required this.onTap});
 
   @override
@@ -56,22 +55,28 @@ class HomeContainer extends StatelessWidget {
   }
 }
 
-
 class RowValue extends StatelessWidget {
   final String title;
   final String value;
-  const RowValue({super.key,required this.title,required this.value});
+  final IconData? iconData;
+  const RowValue({super.key,required this.title,required this.value,this.iconData});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('${title} :',
-          style: TextStyle(
-              fontFamily:GoogleFonts.kanit().fontFamily,
-              fontSize: 16
-          ),
+        Row(
+          children: [
+            Icon(iconData),
+            SizedBox(width: 5),
+            Text('${title} :',
+              style: TextStyle(
+                  fontFamily:GoogleFonts.kanit().fontFamily,
+                  fontSize: 16
+              ),
+            ),
+          ],
         ),
         Text(value,
           style: TextStyle(

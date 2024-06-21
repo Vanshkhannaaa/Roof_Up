@@ -65,20 +65,13 @@ class FullScreenImage extends StatelessWidget {
     return Scaffold(
       body:Stack(
         children: [
-          GestureDetector(
-            onVerticalDragUpdate: (details) {
-              if (details.primaryDelta! > 0) {
-                Navigator.of(context).pop();
-              }
-            },
-            child:Center(
-              child: PhotoView(
-                minScale: PhotoViewComputedScale.contained,
-                enableRotation: false,
-                imageProvider: AssetImage(imagePath),
-                backgroundDecoration: BoxDecoration(
-                color: Colors.white,
-                ),
+          Center(
+            child: PhotoView(
+              minScale: PhotoViewComputedScale.contained,
+              enableRotation: false,
+              imageProvider: AssetImage(imagePath),
+              backgroundDecoration: BoxDecoration(
+              color: Colors.white,
               ),
             ),
           ),

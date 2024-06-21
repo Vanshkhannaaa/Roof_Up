@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../Common/appBar.dart';
 import '../Common/home_container.dart';
 
@@ -23,13 +23,18 @@ class _HomePageState extends State<HomePage> {
 
   int _currentIndex = 0;
 
+  void initState(){
+    print(FirebaseAuth.instance.currentUser);
+    super.initState();
+  }
+
   final CarouselController _carouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(name: 'Roof Up',home: true,),
+      appBar: CustomAppBar(name: 'Roof Up',home: true),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: SafeArea(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roof_up/home/sell/add_details.dart';
 import '../../../Common/TextField.dart';
 import '../../../Common/appBar.dart';
 
@@ -19,30 +20,52 @@ class _SellHouseState extends State<SellHouse> {
   TextEditingController BedroomController = TextEditingController();
   TextEditingController BathroomController = TextEditingController();
   TextEditingController MobileController = TextEditingController();
+  String facing = '';
+  String availability = '';
+  String furnishingDetails = '';
+  Map<String, dynamic> propertyData = {};
+
+  void createDetails() {
+    propertyData = {
+      'area': AreaController.text.trim(),
+      'value': ValueController.text.trim(),
+      'year': YearController.text.trim(),
+      'loan': LoanController.text.trim(),
+      'floor': FloorController.text.trim(),
+      'property': PropertyController.text.trim(),
+      'bedroom': BedroomController.text.trim(),
+      'bathroom': BathroomController.text.trim(),
+      'mobile': MobileController.text.trim(),
+      'facing': facing,
+      'availability': availability,
+      'furnishingDetails': furnishingDetails,
+    };
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddDetails(data: propertyData)));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:CustomAppBar(name: 'Sell',home: false),
+      appBar: CustomAppBar(name: 'Sell', home: false),
       body: Padding(
-        padding: EdgeInsets.only(top: 20.0,left: 20,right: 20),
+        padding: EdgeInsets.only(top: 20.0, left: 20, right: 20),
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
-
                 AreaField(controller: AreaController),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomTextField(
-                  controller: ValueController,
+                    controller: ValueController,
                     title: 'Estimated value (in \u20b9)',
                     hint: 'Enter value',
                     type: TextInputType.number),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomDropdown(
                     title: 'Facing',
                     hint: 'Select Facing',
@@ -56,91 +79,88 @@ class _SellHouseState extends State<SellHouse> {
                       'South-East',
                       'South-West',
                     ]),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomTextField(
-                  controller: YearController,
+                    controller: YearController,
                     title: 'Year built',
                     hint: 'Built In ',
                     type: TextInputType.number),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomTextField(
-                  controller: LoanController,
+                    controller: LoanController,
                     title: 'Estimated Mortgage Balance',
                     hint: 'Enter Mortgage',
                     type: TextInputType.text),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomTextField(
-                  controller: FloorController,
+                    controller: FloorController,
                     title: 'Floor Details',
                     hint: 'Total Floors',
                     type: TextInputType.number),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomTextField(
-                  controller: PropertyController,
+                    controller: PropertyController,
                     title: 'Property on floor (optional)',
                     hint: 'Your floor',
                     type: TextInputType.number),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomTextField(
-                  controller: BedroomController,
+                    controller: BedroomController,
                     title: 'No. of bedrooms',
                     hint: 'Enter no. of bedrooms',
                     type: TextInputType.number),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomTextField(
-                  controller: BathroomController,
+                    controller: BathroomController,
                     title: 'No. of bathrooms',
                     hint: 'Enter no. of bathrooms',
                     type: TextInputType.number),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomDropdown(
-                    options:[
-                      'Ready to move',
-                      'Under Construction'
-                    ],
+                    options: ['Ready to move', 'Under Construction'],
                     title: 'Availability',
                     hint: 'Select availability'),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomDropdown(
-                    options:[
+                    options: [
                       'Fully furnished',
                       'Semi furnished',
                       'Unfurnished'
                     ],
                     title: 'Furnishing details',
                     hint: 'Select Details'),
-
-                SizedBox(height: 10,),
-
+                SizedBox(
+                  height: 10,
+                ),
                 CustomTextField(
-                  controller: MobileController,
+                    controller: MobileController,
                     title: 'Mobile No.',
                     hint: 'Enter mobile no.',
                     type: TextInputType.number),
-
-                SizedBox(height: 10,),
-
-                CustomButton(name: 'Next',
-                    onpressed: (){
-                      Navigator.pushNamed(context, '/details');
+                SizedBox(
+                  height: 10,
+                ),
+                CustomButton(
+                    name: 'Next',
+                    onpressed: () {
+                      createDetails();
                     }),
-
                 SizedBox(height: 10)
               ],
             ),
