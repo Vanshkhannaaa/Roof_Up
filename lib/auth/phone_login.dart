@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/Common/TextField.dart';
+import '../Common/common.dart';
 import 'otp.dart';
 
 class PhoneLogin extends StatefulWidget {
@@ -12,10 +13,15 @@ class PhoneLogin extends StatefulWidget {
   State<PhoneLogin> createState() => _PhoneLoginState();
 }
 class _PhoneLoginState extends State<PhoneLogin> {
+  bool isLoading = false;
   final _phoneController = TextEditingController();
 
   void _verifyPhoneNumber() async {
+    setState(() {
+      isLoading= true;
+    });
     final phoneNumber = _phoneController.text;
+    print('hi');
     if (phoneNumber.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please enter a phone number')),
@@ -42,36 +48,16 @@ class _PhoneLoginState extends State<PhoneLogin> {
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
     }
+    print("hi2");
+    setState(() {
+      isLoading= false;
+    });
   }
 
-  // void _navigateToOtpPage() {
-  //   final phoneNumber = _phoneController.text;
-  //
-  //   if (phoneNumber.isEmpty) {
-  //     // Show error if phone number is empty
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Please enter a phone number')),
-  //     );
-  //   } else if (phoneNumber.length < 10) {
-  //     // Show error if phone number is less than 10 digits
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Please enter a valid phone number')),
-  //     );
-  //   } else {
-  //     // Navigate to the OTP page if the phone number is valid
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => otppage(phoneNumber: phoneNumber),
-  //       ),
-  //     );
-  //   }
-  // }
-
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body: SingleChildScrollView(
+      body: isLoading?CommonClass.loader(context):
+      SingleChildScrollView(
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal:25),
@@ -80,15 +66,12 @@ class _PhoneLoginState extends State<PhoneLogin> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 30),
-
                 Center(
                   child: Image.asset('assets/images/otp.png',
                     height: MediaQuery.of(context).size.height*0.35,),
                 ),
-
                 SizedBox(height: 30),
-
-                Text('OTP Verification',
+                Text('Phone Number Verification',
                   style:TextStyle(
                     fontSize:20,
                     fontFamily: GoogleFonts.kanit().fontFamily
@@ -136,7 +119,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
                 SizedBox(height: 20),
 
                 CustomButton(name: 'Continue', onpressed: (){
-                  // _navigateToOtpPage();
                   _verifyPhoneNumber();
                 }),
 

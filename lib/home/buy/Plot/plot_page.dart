@@ -34,12 +34,12 @@ class _PlotPageState extends State<PlotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       HomeContainer(
-                          name: 'Residential',
+                          name: 'Residential\nPlot',
                           iconData: Icons.home_rounded,
                           onTap: (){
                           }),
                       HomeContainer(
-                          name: 'Commercial',
+                          name: 'Commercial\nPlot',
                           iconData: Icons.location_city,
                           onTap: (){
                           })
@@ -50,12 +50,12 @@ class _PlotPageState extends State<PlotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       HomeContainer(
-                          name: 'Shop',
+                          name: 'Shop\nPlot',
                           iconData: Icons.add_business_rounded,
                           onTap: (){
                           }),
                       HomeContainer(
-                          name: 'Factory',
+                          name: 'Factory\nPlot',
                           iconData: Icons.factory,
                           onTap: (){
                           })

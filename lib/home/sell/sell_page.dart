@@ -30,7 +30,7 @@ class _SellPageState extends State<SellPage> {
                           name: 'Plot',
                           iconData: Icons.rectangle_outlined,
                           onTap: (){
-                            Navigator.pushNamed(context, '/sellplot');
+                            Navigator.pushNamed(context, '/spp');
                           }
                       ),
                       HomeContainer(
@@ -94,7 +94,7 @@ class _SellPageState extends State<SellPage> {
                           }
                       ),
                       HomeContainer(
-                          name: 'Commercial',
+                          name: 'Commercial Land',
                           iconData: Icons.location_city,
                           onTap: (){
                             Navigator.of(context).pushNamed('/sellplot');
@@ -107,7 +107,7 @@ class _SellPageState extends State<SellPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       HomeContainer(
-                          name: 'Agriculture',
+                          name: 'Agricultural Land',
                           iconData: Icons.agriculture,
                           onTap: (){}
                       ),
@@ -130,7 +130,7 @@ class _SellPageState extends State<SellPage> {
                           onTap: (){}
                       ),
                       HomeContainer(
-                          name: 'Weighbridge',
+                          name: 'Weighbridge\n( Dharam Kanta )',
                           iconData: Icons.local_shipping,
                           onTap: (){}
                       )

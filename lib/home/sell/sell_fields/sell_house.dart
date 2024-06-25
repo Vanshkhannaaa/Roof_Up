@@ -21,6 +21,7 @@ class _SellHouseState extends State<SellHouse> {
   TextEditingController BathroomController = TextEditingController();
   TextEditingController MobileController = TextEditingController();
   String facing = '';
+  String areaUnit = '';
   String availability = '';
   String furnishingDetails = '';
   Map<String, dynamic> propertyData = {};
@@ -39,6 +40,7 @@ class _SellHouseState extends State<SellHouse> {
       'facing': facing,
       'availability': availability,
       'furnishingDetails': furnishingDetails,
+      'areaUnit': areaUnit,
     };
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => AddDetails(data: propertyData)));
@@ -54,7 +56,13 @@ class _SellHouseState extends State<SellHouse> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                AreaField(controller: AreaController),
+                AreaField(
+                    onUnitSelected: (String? unit) {
+                      setState(() {
+                        areaUnit = unit ?? '';
+                      });
+                    },
+                    controller: AreaController),
                 SizedBox(
                   height: 10,
                 ),
@@ -69,6 +77,11 @@ class _SellHouseState extends State<SellHouse> {
                 CustomDropdown(
                     title: 'Facing',
                     hint: 'Select Facing',
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        facing = newValue ?? "";
+                      });
+                    },
                     options: [
                       'North',
                       'South',
@@ -131,6 +144,11 @@ class _SellHouseState extends State<SellHouse> {
                   height: 10,
                 ),
                 CustomDropdown(
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        availability = newValue ?? "";
+                      });
+                    },
                     options: ['Ready to move', 'Under Construction'],
                     title: 'Availability',
                     hint: 'Select availability'),
@@ -138,6 +156,11 @@ class _SellHouseState extends State<SellHouse> {
                   height: 10,
                 ),
                 CustomDropdown(
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        furnishingDetails = newValue ?? "";
+                      });
+                    },
                     options: [
                       'Fully furnished',
                       'Semi furnished',

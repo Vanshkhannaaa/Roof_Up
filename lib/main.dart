@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/home/buy/feed/photo_slider.dart';
+import 'package:roof_up/home/sell/sell_fields/sell_plot/plot_sell_page.dart';
 import 'package:roof_up/splash_screen.dart';
 import 'auth/otp.dart';
 import 'firebase_options.dart';
@@ -16,7 +17,7 @@ import 'home/sell/sell_fields/sell_flat.dart';
 import 'home/sell/sell_fields/sell_guestroom.dart';
 import 'home/sell/sell_fields/sell_halls.dart';
 import 'home/sell/sell_fields/sell_house.dart';
-import 'home/sell/sell_fields/sell_plot.dart';
+import 'home/sell/sell_fields/sell_plot/sell_plot.dart';
 import 'home/sell/sell_fields/sell_shop.dart';
 import 'home/sell/sell_page.dart';
 import 'home/sell/summary.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
         '/guestroom': (context) => const SellGuestRoom(),
         '/sellhall': (context) => const SellHalls(),
         '/slider': (context) => PhotoSlider(),
+        '/spp': (context) => SellPlotPage(),
       },
     );
   }

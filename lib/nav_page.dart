@@ -1,13 +1,13 @@
 import 'package:custom_line_indicator_bottom_navbar/custom_line_indicator_bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:roof_up/saved/saved_page.dart';
-
 import 'home/home_page.dart';
 import 'more/more_page.dart';
 import 'notifications/notifications_page.dart';
 
 
 class NavPage extends StatefulWidget {
+
   const NavPage({super.key});
 
   @override
@@ -15,6 +15,16 @@ class NavPage extends StatefulWidget {
 }
 
 class _NavPageState extends State<NavPage> {
+
+  Color _selectedIndexColor(){
+    switch(_selectedIndex){
+      case 0: return Colors.blue.shade800;
+      case 1: return Colors.red;
+      case 2: return Colors.amber.shade900;
+      case 3: return Colors.black;
+      default: return Colors.black54;
+    }
+  }
 
   int _selectedIndex = 0; //default index
 
@@ -25,6 +35,8 @@ class _NavPageState extends State<NavPage> {
     More(),
   ];
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +44,7 @@ class _NavPageState extends State<NavPage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: CustomLineIndicatorBottomNavbar(
-        selectedColor: Colors.blue.shade800,
+        selectedColor: _selectedIndexColor(),
         unSelectedColor: Colors.black54,
         backgroundColor: Colors.white,
         currentIndex: _selectedIndex,
@@ -44,9 +56,9 @@ class _NavPageState extends State<NavPage> {
         enableLineIndicator: true,
         lineIndicatorWidth: 3,
         indicatorType: IndicatorType.Top,
-        selectedIconSize: 20,
+        selectedIconSize: 25,
         selectedFontSize: 12,
-        unselectedIconSize: 20,
+        unselectedIconSize: 25,
         unselectedFontSize: 12,
 
         customBottomBarItems: [

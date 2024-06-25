@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(name: 'Roof Up',home: true),
+      appBar: CustomAppBar(name: 'Roof Up',home: true,),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: SafeArea(
@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     HomeContainer(
+                      iconColor: Colors.green.shade900,
                       onTap: () {
                         Navigator.of(context).pushNamed('/buy');
                       },
@@ -95,6 +96,7 @@ class _HomePageState extends State<HomePage> {
                       iconData: Icons.add_home_work,
                     ),
                     HomeContainer(
+                      iconColor: Colors.red.shade900,
                       onTap: () {
                         Navigator.of(context).pushNamed('/sell');
                       },
@@ -108,11 +110,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     HomeContainer(
+                      iconColor: Colors.blue.shade900,
                       onTap: () {},
                       name: 'Rent',
                       iconData: Icons.add_home,
                     ),
                     HomeContainer(
+                      iconColor: Colors.amber.shade900,
                       onTap: () {},
                       name: 'To-Let',
                       iconData: Icons.add_home_work_outlined,
@@ -124,6 +128,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     HomeContainer(
+                      iconColor: Colors.grey.shade700,
                       onTap: () {
                         Navigator.of(context).pushNamed('/installment');
                       },
@@ -131,8 +136,9 @@ class _HomePageState extends State<HomePage> {
                       iconData: Icons.calculate_rounded,
                     ),
                     HomeContainer(
+                      iconColor: Colors.brown,
                       onTap: () {
-                        Navigator.of(context).pushNamed('/otp');
+                        Navigator.of(context).pushNamed('');
                       },
                       name: 'Listing',
                       iconData: Icons.list_alt_rounded,
@@ -140,6 +146,28 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    HomeContainer(
+                      iconColor: Colors.teal.shade900,
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/installment');
+                      },
+                      name: 'Size Calculator',
+                      iconData: Icons.area_chart_sharp,
+                    ),
+                    HomeContainer(
+                      iconColor: Colors.deepPurple.shade900,
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/animation');
+                      },
+                      name: 'My Listings',
+                      iconData: Icons.list,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15,)
               ],
             ),
           ),

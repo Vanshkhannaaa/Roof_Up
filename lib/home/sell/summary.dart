@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,24 +8,29 @@ import 'package:roof_up/Common/home_container.dart';
 
 class Summary extends StatefulWidget {
   final bool comingFromBuy;
-  const Summary({super.key,required this.comingFromBuy});
+  final String uid;
+  final String propertyId;
+  const Summary(
+      {super.key,
+        required this.comingFromBuy,
+        required this.uid,
+        required this.propertyId});
   @override
   State<Summary> createState() => _SummaryState();
 }
 
 class _SummaryState extends State<Summary> {
+  bool isLoading = false;
+  Map<String, dynamic> propertyData = {};
   final List<String> imgList = [
     'assets/images/img1.jpg',
     'assets/images/img2.jpeg',
     'assets/images/img3.jpeg',
   ];
-
   int _currentIndex = 0;
-
+  bool? toggleFavorite;
   final CarouselController _carouselController = CarouselController();
-
   String _selectedCategory = 'Essential'; // To track the selected category
-
   final Map<String, List<Map<String, String>>> nearbyLandmarks = {
     'Essential': [
       {'Apollo hospital': '3.9km/3min'},
@@ -44,17 +50,46 @@ class _SummaryState extends State<Summary> {
     ],
   };
 
+  @override
+  void initState() {
+    fetchPropertyData();
+    super.initState();
+  }
+
+  void fetchPropertyData() async {
+    setState(() {
+      isLoading = true;
+    });
+    var propertyRef = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.uid)
+        .collection('property')
+        .doc(widget.propertyId)
+        .get();
+    setState(() {
+      propertyData = propertyRef.data()!;
+      toggleFavorite = propertyRef.data()!['addToFavourite'];
+      isLoading = false;
+    });
+  }
+
   void _onCategoryTap(String category) {
     setState(() {
       _selectedCategory = category;
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: isLoading
+          ? Center(
+        child: CircularProgressIndicator(
+          color: Colors.blue.shade800,
+          strokeWidth: 2,
+        ),
+      )
+          : SingleChildScrollView(
         child: Column(
           children: [
             Stack(
@@ -64,14 +99,26 @@ class _SummaryState extends State<Summary> {
                     Navigator.pushNamed(context, '/slider');
                   },
                   child: CarouselSlider(
-                    items: imgList.map((item) =>
-                        _buildCarouselItem(context, item)).toList(),
+                    items:
+                    propertyData['imageUrl'].map<Widget>((imageUrl) {
+                      // List<dynamic> imageUrls =
+                      //     propertyMap['imageUrl'] ?? [];
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.24,
+                        child: Image.network(
+                          imageUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    }).toList(),
                     options: CarouselOptions(
-                      aspectRatio: 14 / 9,
+                      height: 300.0,
+                      aspectRatio: 2,
                       viewportFraction: 1,
                       initialPage: 0,
                       autoPlayInterval: const Duration(seconds: 5),
-                      autoPlayCurve: Curves.fastEaseInToSlowEaseOut,
+                      autoPlayCurve: Curves.fastOutSlowIn,
                       onPageChanged: (index, reason) {
                         setState(() {
                           _currentIndex = index;
@@ -89,28 +136,92 @@ class _SummaryState extends State<Summary> {
                     child: _buildDotIndicator(),
                   ),
                 ),
-
                 Positioned(
-                  top: 30,
-                  left: 10,
+                  top: 40,
+                  // left: 10,
                   child: Container(
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.75),
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back_ios_new, size: 16),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: Container(
+                            height: 38,
+                            width: 38,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios_new,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: Container(
+                            height: 38,
+                            width: 38,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                  toggleFavorite == true
+                                      ? Icons.favorite
+                                      : Icons.favorite_outline_rounded,
+                                  color: toggleFavorite == true
+                                      ? Colors.pink.shade400
+                                      : Colors.black,
+                                  size: 20),
+                              onPressed: () async {
+                                setState(() {
+                                  toggleFavorite = !toggleFavorite!;
+                                });
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(widget.uid)
+                                    .collection('property')
+                                    .doc(widget.propertyId)
+                                    .set({
+                                  'area': propertyData['area'],
+                                  'value': propertyData['value'],
+                                  'year': propertyData['year'],
+                                  'loan': propertyData['loan'],
+                                  'floor': propertyData['floor'],
+                                  'property': propertyData['property'],
+                                  'bedroom': propertyData['bedroom'],
+                                  'bathroom': propertyData['bathroom'],
+                                  'mobile': propertyData['mobile'],
+                                  'facing': propertyData['facing'],
+                                  'availability':
+                                  propertyData['availability'],
+                                  'furnishingDetails':
+                                  propertyData['furnishingDetails'],
+                                  'imageUrl': propertyData['imageUrl'],
+                                  'areaUnit': propertyData['areaUnit'],
+                                  'addToFavourite': toggleFavorite,
+                                  'propertyId':
+                                  propertyData['propertyId'],
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
@@ -123,10 +234,10 @@ class _SummaryState extends State<Summary> {
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
                             color: Colors.green.shade50,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
+                            borderRadius: BorderRadius.circular(10)),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceEvenly,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
@@ -134,8 +245,11 @@ class _SummaryState extends State<Summary> {
                               color: Colors.green.shade800,
                               size: 12,
                             ),
-                            SizedBox(width: 5,),
-                            Text("For Sale",
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "For Sale",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -145,145 +259,113 @@ class _SummaryState extends State<Summary> {
                       ),
                       SizedBox(height: 5),
                       Text(
-                        '\u20b9 50,00,000',
+                        '\u20b9 ${propertyData['value']}',
                         style: TextStyle(
-                          fontFamily: GoogleFonts
-                              .kanit()
-                              .fontFamily,
+                          fontFamily: GoogleFonts.kanit().fontFamily,
                           fontSize: 34,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                       SizedBox(height: 10),
-                      Text("Property Details",
+                      Text(
+                        "Property Details",
                         style: TextStyle(
-                          fontFamily: GoogleFonts
-                              .kanit()
-                              .fontFamily,
+                          fontFamily: GoogleFonts.kanit().fontFamily,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-
                       SizedBox(height: 20),
                       RowValue(
-                        iconData: Icons.area_chart_sharp,
+                          iconData: Icons.area_chart_sharp,
                           title: 'Area',
-                          value: '250 sqft'
-                      ),
+                          value: propertyData['area']),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.price_check_outlined,
+                          iconData: Icons.price_check_outlined,
                           title: 'Estimated Value',
-                          value: '\u20b9 50,00,000'
-                      ),
+                          value: '\u20b9 ${propertyData['value']}'),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.compass_calibration_rounded,
+                          iconData: Icons.compass_calibration_rounded,
                           title: 'Facing',
-                          value: 'North'
-                      ),
+                          value: propertyData['facing']),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.timeline,
+                          iconData: Icons.timeline,
                           title: 'Year purchased',
-                          value: '2005'
-                      ),
+                          value: propertyData['year']),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.business,
+                          iconData: Icons.business,
                           title: 'Total Floors',
-                          value: '2'
-                      ),
+                          value: propertyData['floor']),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.other_houses,
+                          iconData: Icons.other_houses,
                           title: 'Property on floor',
-                          value: '2'
-                      ),
+                          value: propertyData['floor']),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.bedroom_parent,
+                          iconData: Icons.bedroom_parent,
                           title: 'No. of bedrooms',
-                          value: '5'
-                      ),
+                          value: propertyData['bedroom']),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.bathtub_rounded,
+                          iconData: Icons.bathtub_rounded,
                           title: 'No. of bathrooms',
-                          value: '5'
-                      ),
+                          value: propertyData['bathroom']),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.event_available,
+                          iconData: Icons.event_available,
                           title: 'Availability',
-                          value: 'Immediately Available'
-                      ),
+                          value: propertyData['availability']),
                       SizedBox(height: 10),
-
                       Divider(),
-
                       SizedBox(height: 10),
                       RowValue(
-                        iconData: Icons.table_restaurant_rounded,
+                          iconData: Icons.table_restaurant_rounded,
                           title: 'Furnishing Details',
-                          value: 'Fully furnished'
-                      ),
+                          value: propertyData['furnishingDetails']),
                       SizedBox(height: 10),
-
                       Divider(),
-
-                      widget.comingFromBuy?
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      widget.comingFromBuy
+                          ? Column(
+                        crossAxisAlignment:
+                        CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 10,),
-                          Text("Nearby Landmark",
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Nearby Landmark",
                             style: TextStyle(
-                              fontFamily: GoogleFonts
-                                  .kanit()
-                                  .fontFamily,
+                              fontFamily:
+                              GoogleFonts.kanit().fontFamily,
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-
                           SizedBox(height: 15),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
                             children: [
                               _buildCategoryText('Essential'),
                               _buildCategoryText('Transit'),
@@ -295,16 +377,12 @@ class _SummaryState extends State<Summary> {
                           ..._buildNearbyLandmarks(),
                           SizedBox(height: 15),
                         ],
-                      ):SizedBox(height: 0),
-
-                      Divider(),
-
-                      Text("Description",
+                      )
+                          : SizedBox(height: 0),
+                      Text(
+                        "Description",
                         style: TextStyle(
-
-                          fontFamily: GoogleFonts
-                              .kanit()
-                              .fontFamily,
+                          fontFamily: GoogleFonts.kanit().fontFamily,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
@@ -317,12 +395,11 @@ class _SummaryState extends State<Summary> {
                         style: TextStyle(fontSize: 16),
                       ),
                       SizedBox(height: 20),
-
-                      !widget.comingFromBuy?
-                      CustomButton(
-                          name: "Post",
-                          onpressed: (){}
-                      ):SizedBox(height: 0,)
+                      !widget.comingFromBuy
+                          ? CustomButton(name: "Submit", onpressed: () {})
+                          : SizedBox(
+                        height: 0,
+                      )
                     ],
                   ),
                 ],
@@ -337,10 +414,7 @@ class _SummaryState extends State<Summary> {
   Widget _buildDotIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: imgList
-          .asMap()
-          .entries
-          .map((entry) {
+      children: imgList.asMap().entries.map((entry) {
         return InkWell(
           onTap: () => _carouselController.animateToPage(entry.key),
           child: Container(
@@ -360,10 +434,7 @@ class _SummaryState extends State<Summary> {
 
   Widget _buildCarouselItem(BuildContext context, String imageUrl) {
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       child: Image.asset(
         imageUrl,
         fit: BoxFit.cover,

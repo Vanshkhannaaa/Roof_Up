@@ -31,8 +31,8 @@ class CustomTextField extends StatelessWidget {
                 contentPadding: EdgeInsets.symmetric(horizontal: 15),
                 hintText: hint,
                 hintStyle: TextStyle(
-                  color: Colors.grey.shade400,
-                  fontSize: 14
+                    color: Colors.grey.shade400,
+                    fontSize: 14
                 ),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -77,8 +77,8 @@ class SmallTextField extends StatelessWidget {
                 contentPadding: EdgeInsets.symmetric(horizontal: 15),
                 hintText: hint,
                 hintStyle: TextStyle(
-                  color: Colors.grey.shade400,
-                  fontSize: 14
+                    color: Colors.grey.shade400,
+                    fontSize: 14
                 ),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -129,7 +129,10 @@ class CustomButton extends StatelessWidget {
 
 class AreaField extends StatefulWidget {
   final TextEditingController? controller;
-  const AreaField({super.key, required this.controller});
+  final ValueChanged<String>? onUnitSelected;
+
+  const AreaField({Key? key, required this.controller, this.onUnitSelected})
+      : super(key: key);
 
   @override
   State<AreaField> createState() => _AreaFieldState();
@@ -173,7 +176,8 @@ class _AreaFieldState extends State<AreaField> {
                   setState(() {
                     selectedUnit = 'Sq.ft';
                   });
-                  Navigator.pop(context, 'Unit 1');
+                  Navigator.pop(context);
+                  widget.onUnitSelected?.call('Sq.ft');
                 },
               ),
               Divider(),
@@ -183,7 +187,8 @@ class _AreaFieldState extends State<AreaField> {
                   setState(() {
                     selectedUnit = 'Sq.m';
                   });
-                  Navigator.pop(context, 'Unit 2');
+                  Navigator.pop(context);
+                  widget.onUnitSelected?.call('Sq.m');
                 },
               ),
               Divider(),
@@ -193,7 +198,8 @@ class _AreaFieldState extends State<AreaField> {
                   setState(() {
                     selectedUnit = 'Acres';
                   });
-                  Navigator.pop(context, 'Unit 3');
+                  Navigator.pop(context);
+                  widget.onUnitSelected?.call('Acres');
                 },
               ),
               Divider(),
@@ -203,8 +209,8 @@ class _AreaFieldState extends State<AreaField> {
                   setState(() {
                     selectedUnit = 'Hectares';
                   });
-                  // Handle unit selection
-                  Navigator.pop(context, 'Unit 3');
+                  Navigator.pop(context);
+                  widget.onUnitSelected?.call('Hectares');
                 },
               ),
             ],
@@ -213,12 +219,14 @@ class _AreaFieldState extends State<AreaField> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text( 'Area',
+        Text(
+          'Area',
           style: TextStyle(
             fontWeight: FontWeight.w500,
           ),
@@ -229,50 +237,46 @@ class _AreaFieldState extends State<AreaField> {
           color: Colors.white60,
           child: TextField(
             controller: widget.controller,
-            keyboardType:TextInputType.number,
+            keyboardType: TextInputType.number,
             cursorColor: Colors.blue.shade800,
             decoration: InputDecoration(
-                suffixIcon: Container(
-                  margin: EdgeInsets.symmetric(vertical: 3,horizontal: 5),
-                  decoration: BoxDecoration(
-                      border: Border(
-                          left: BorderSide(
-                              color: Colors.grey.shade400
-                          )
-                      )
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        onPressed: (){
-                          _showBottomSheet(context);
-                        },
-                        child: Text(
-                          selectedUnit,
-                          style: TextStyle(
-                              color: Colors.grey.shade700
-                          ),
-                        ),
-                      )
-                    ],
+              suffixIcon: Container(
+                margin: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                decoration: BoxDecoration(
+                  border: Border(
+                    left: BorderSide(color: Colors.grey.shade400),
                   ),
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                hintText: 'Enter Area',
-                hintStyle: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 14
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        _showBottomSheet(context);
+                      },
+                      child: Text(
+                        selectedUnit,
+                        style: TextStyle(color: Colors.grey.shade700),
+                      ),
+                    )
+                  ],
                 ),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.grey.shade700)
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.blue.shade800)
-                )
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 15),
+              hintText: 'Enter Area',
+              hintStyle: TextStyle(
+                color: Colors.grey.shade400,
+                fontSize: 14,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.grey.shade700),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.blue.shade800),
+              ),
             ),
           ),
         )
@@ -281,17 +285,20 @@ class _AreaFieldState extends State<AreaField> {
   }
 }
 
+
 class CustomDropdown extends StatefulWidget {
   final List<String> options;
   final String title;
   final String hint;
+  final ValueChanged<String?>? onChanged;
 
-  const CustomDropdown(
-      {super.key,
-        required this.options,
-        required this.title,
-        required this.hint,
-        });
+  const CustomDropdown({
+    Key? key,
+    required this.options,
+    required this.title,
+    required this.hint,
+    this.onChanged,
+  }) : super(key: key);
 
   @override
   State<CustomDropdown> createState() => _CustomDropdownState();
@@ -299,6 +306,7 @@ class CustomDropdown extends StatefulWidget {
 
 class _CustomDropdownState extends State<CustomDropdown> {
   String? _selectedValue;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -335,6 +343,9 @@ class _CustomDropdownState extends State<CustomDropdown> {
                 setState(() {
                   _selectedValue = newValue;
                 });
+                if (widget.onChanged != null) {
+                  widget.onChanged!(newValue);
+                }
               },
               items:
               widget.options.map<DropdownMenuItem<String>>((String value) {
@@ -354,10 +365,3 @@ class _CustomDropdownState extends State<CustomDropdown> {
     );
   }
 }
-
-
-
-
-
-
-

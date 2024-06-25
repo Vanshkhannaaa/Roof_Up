@@ -20,7 +20,7 @@ class AddDetails extends StatefulWidget {
 
 class _AddDetailsState extends State<AddDetails> {
   Map<String, dynamic> propertyData = {};
-  List<File>? res;
+  List<File> res = [];
   List<String> imageUrls = [];
 
   @override
@@ -32,21 +32,20 @@ class _AddDetailsState extends State<AddDetails> {
 
   void addData() async {
     String? id = FirebaseAuth.instance.currentUser?.uid;
-    res!.forEach((image) async {
-      String imageUrl;
-      String filename = image.toString();
-      Reference storageRef = FirebaseStorage.instance.ref();
-      Reference propertyrRef = storageRef.child('properties');
-      Reference uploadRef = propertyrRef.child(filename);
-      await uploadRef.putData(
-        await image.readAsBytes(),
-        SettableMetadata(contentType: 'image/jpeg'),
-      );
-      imageUrl = await uploadRef.getDownloadURL();
-      setState(() {
-        imageUrls.add(imageUrl);
+    print(id);
+    FirebaseStorage storageRef = FirebaseStorage.instance;
+    if (res.isNotEmpty) {
+      await Future.forEach(res, (image) async {
+        String fileName =
+            'properties/${DateTime.now().millisecondsSinceEpoch}.jpg';
+        await storageRef.ref(fileName).putFile(image);
+        String downloadURL = await storageRef.ref(fileName).getDownloadURL();
+        setState(() {
+          imageUrls.add(downloadURL);
+        });
       });
-    });
+    }
+    print(imageUrls);
 
     var docRef = await FirebaseFirestore.instance
         .collection("users")
@@ -66,12 +65,21 @@ class _AddDetailsState extends State<AddDetails> {
       'availability': propertyData['availability'],
       'furnishingDetails': propertyData['furnishingDetails'],
       'imageUrl': imageUrls,
+      'areaUnit': propertyData['areaUnit'],
+      'addToFavourite': false,
     });
     String idd = docRef.id;
     docRef.update({
       'propertyId': idd,
     });
-    Navigator.pushNamed(context, '/summary');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Summary(
+              comingFromBuy: false,
+              uid: globals.uid,
+              propertyId: idd,
+            )));
   }
 
   @override
@@ -100,6 +108,7 @@ class _AddDetailsState extends State<AddDetails> {
                               builder: (context) => const WhatsappCamera(),
                             ),
                           );
+                          print(res[0].toString().split('/')[5]);
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -151,6 +160,7 @@ class _AddDetailsState extends State<AddDetails> {
                     ],
                   ),
                   SizedBox(height: 30),
+                  // Image.file(res![0]),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -187,9 +197,6 @@ class _AddDetailsState extends State<AddDetails> {
                       name: 'Next',
                       onpressed: () {
                         addData();
-                        Navigator.push(context,
-                            MaterialPageRoute(
-                                builder: (context) => Summary(comingFromBuy: false)));
                       })
                 ],
               ),

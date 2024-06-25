@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/home/sell/summary.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../Common/property_slider.dart';
-import '../../../Common/temp.dart';
 import '../../../Common/search_bar.dart';
+import '../../../Common/globals.dart' as globals;
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -19,8 +18,8 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   List<Map<String, dynamic>> allProperties = [];
   int _currentIndex = 0;
-  bool _isFavorite = false;
   final CarouselController _carouselController = CarouselController();
+  Map<String, bool> toggleFavorite = {};
   final List<String> imgList = [
     'assets/images/img1.jpg',
     'assets/images/img2.jpeg',
@@ -33,6 +32,7 @@ class _FeedPageState extends State<FeedPage> {
     if (propertyRef.docs.isNotEmpty) {
       setState(() {
         propertyRef.docs.forEach((property) {
+          toggleFavorite[property['propertyId']] = false;
           allProperties.add(property.data());
         });
       });
@@ -46,21 +46,14 @@ class _FeedPageState extends State<FeedPage> {
     super.initState();
   }
 
-  void _toggleFavorite() {
-    setState(() {
-      _isFavorite = !_isFavorite;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'House/Flat',
+          'House',
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
         ),
-        centerTitle: true,
         surfaceTintColor: Colors.white,
       ),
       body: Padding(
@@ -76,9 +69,15 @@ class _FeedPageState extends State<FeedPage> {
                 itemCount: allProperties.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: (){
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context)=>Summary(comingFromBuy: true)));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Summary(
+                                  comingFromBuy: true,
+                                  uid: globals.uid,
+                                  propertyId: allProperties[index]
+                                  ['propertyId'])));
                     },
                     child: Container(
                       padding: EdgeInsets.all(8.0),
@@ -95,37 +94,90 @@ class _FeedPageState extends State<FeedPage> {
                       child: Column(
                         children: [
                           Stack(
-                              children: [
-                                CarouselSlider(
-                                  items: imgList
-                                      .map((item) =>
-                                      _buildCarouselItem(context, item))
-                                      .toList(),
-                                  options: CarouselOptions(
-                                    height: 170.0,
-                                    aspectRatio: 2,
-                                    viewportFraction: 0.8,
-                                    initialPage: 1,
-                                    autoPlayInterval: const Duration(seconds: 5),
-                                    autoPlayCurve: Curves.fastEaseInToSlowEaseOut,
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _currentIndex = index;
-                                      });
-                                    },
-                                  ),
-                                  carouselController: _carouselController,
+                            children: [
+                              CarouselSlider(
+                                items: allProperties[index]['imageUrl']
+                                    .map<Widget>((imageUrl) {
+                                  // List<dynamic> imageUrls =
+                                  //     propertyMap['imageUrl'] ?? [];
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.24,
+                                    child: ClipRRect(
+                                      borderRadius : BorderRadius.circular(10),
+                                      child: Image.network(
+                                        imageUrl,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                                options: CarouselOptions(
+                                  height: 220.0,
+                                  aspectRatio: 2,
+                                  viewportFraction: 1,
+                                  initialPage: 0,
+                                  autoPlayInterval: const Duration(seconds: 5),
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _currentIndex = index;
+                                    });
+                                  },
                                 ),
-                                Positioned(
-                                  bottom: 0, // Align at the bottom
-                                  left: 0,
-                                  right: 0,
-                                  child: Center(
-                                    child: _buildDotIndicator(),
-                                  ),
+                                carouselController: _carouselController,
+                              ),
+                              Positioned(
+                                top: 160,
+                                left: 5,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.shade800,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        allProperties[index]
+                                        ['furnishingDetails'],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.shade800,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        allProperties[index]['availability'],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              Positioned(
+                                bottom: 0, // Align at the bottom
+                                left: 0,
+                                right: 0,
+                                child: Center(
+                                  child: _buildDotIndicator(),
+                                ),
+                              ),
+                            ],
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10.0, vertical: 5),
@@ -144,7 +196,7 @@ class _FeedPageState extends State<FeedPage> {
                                           fontSize: 24),
                                     ),
                                     Text(
-                                      '${allProperties[index]['area']} gaj (${allProperties[index]['bedrooms']}BHK)',
+                                      '${allProperties[index]['area']} ${allProperties[index]['areaUnit']} (${allProperties[index]['bedroom']}BHK)',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: Colors.grey),
@@ -161,55 +213,142 @@ class _FeedPageState extends State<FeedPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              _toggleFavorite();
-                                            },
-                                            icon: Icon(
-                                              _isFavorite
-                                                  ? Icons.favorite
-                                                  : Icons
-                                                  .favorite_outline_rounded,
-                                              color: _isFavorite
-                                                  ? Colors.pink.shade400
-                                                  : Colors.black,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(Icons.share_rounded))
+                                        Column(
+                                          mainAxisSize : MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    if (toggleFavorite[
+                                                    allProperties[index]
+                                                    ['propertyId']] ==
+                                                        true) {
+                                                      toggleFavorite[
+                                                      allProperties[index]
+                                                      ['propertyId']] =
+                                                      false;
+                                                    } else {
+                                                      toggleFavorite[
+                                                      allProperties[index]
+                                                      ['propertyId']] =
+                                                      true;
+                                                    }
+                                                  });
+                                                  await FirebaseFirestore.instance
+                                                      .collection('users')
+                                                      .doc(globals.uid)
+                                                      .collection('property')
+                                                      .doc(allProperties[index]
+                                                  ['propertyId'])
+                                                      .set({
+                                                    'area': allProperties[index]
+                                                    ['area'],
+                                                    'value': allProperties[index]
+                                                    ['value'],
+                                                    'year': allProperties[index]
+                                                    ['year'],
+                                                    'loan': allProperties[index]
+                                                    ['loan'],
+                                                    'floor': allProperties[index]
+                                                    ['floor'],
+                                                    'property': allProperties[index]
+                                                    ['property'],
+                                                    'bedroom': allProperties[index]
+                                                    ['bedroom'],
+                                                    'bathroom': allProperties[index]
+                                                    ['bathroom'],
+                                                    'mobile': allProperties[index]
+                                                    ['mobile'],
+                                                    'facing': allProperties[index]
+                                                    ['facing'],
+                                                    'availability':
+                                                    allProperties[index]
+                                                    ['availability'],
+                                                    'furnishingDetails':
+                                                    allProperties[index]
+                                                    ['furnishingDetails'],
+                                                    'imageUrl': allProperties[index]
+                                                    ['imageUrl'],
+                                                    'areaUnit': allProperties[index]
+                                                    ['areaUnit'],
+                                                    'addToFavourite':
+                                                    toggleFavorite[
+                                                    allProperties[index]
+                                                    ['propertyId']],
+                                                    'propertyId':
+                                                    allProperties[index]
+                                                    ['propertyId'],
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  toggleFavorite[
+                                                  allProperties[index]
+                                                  ['propertyId']] ==
+                                                      true
+                                                      ? Icons.favorite
+                                                      : Icons
+                                                      .favorite_outline_rounded,
+                                                  color: toggleFavorite[
+                                                  allProperties[index]
+                                                  ['propertyId']] ==
+                                                      true
+                                                      ? Colors.pink.shade400
+                                                      : Colors.black,
+                                                )),
+                                            Text('Save',
+                                              style: TextStyle(
+                                              fontSize: 12
+                                            ),)
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisSize : MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(Icons.share_rounded)),
+                                            Text('Share',
+                                                style: TextStyle(
+                                                fontSize: 12
+                                            ))
+                                          ],
+                                        )
                                       ],
                                     ),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                          Colors.blue, // Background color
-                                          shadowColor:
-                                          Colors.black, // Shadow color
-                                          elevation: 5, // Elevation
-                                          // padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                10), // Rounded corners
+                                    Container(
+                                      width: 100,
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blue
+                                                .shade800, // Background color
+                                            shadowColor:
+                                            Colors.black, // Shadow color
+                                            elevation: 5, // Elevation
+                                            // padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  10), // Rounded corners
+                                            ),
                                           ),
-                                        ),
-                                        onPressed: () async {
-                                          final Uri call = Uri(
-                                              scheme: 'tel',
-                                              path:
-                                              '+91${allProperties[index]['mobile']}');
+                                          onPressed: () async {
+                                            final Uri call = Uri(
+                                                scheme: 'tel',
+                                                path:
+                                                '+91${allProperties[index]['mobile']}');
 
-                                          if (await canLaunchUrl(call)) {
-                                            await launchUrl(call);
-                                          } else {
-                                            throw 'Could not launch $call';
-                                          }
-                                        },
-                                        child: Text(
-                                          'Contact',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ))
+                                            if (await canLaunchUrl(call)) {
+                                              await launchUrl(call);
+                                            } else {
+                                              throw 'Could not launch $call';
+                                            }
+                                          },
+                                          child: Text(
+                                            'Call',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          )),
+                                    )
                                   ],
                                 )
                               ],

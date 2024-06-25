@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 import '../../Common/appBar.dart';
 import '../../Common/home_container.dart';
 import '../../Common/search_bar.dart';
@@ -31,11 +30,13 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                          iconColor: Colors.blue.shade800,
                             name: 'All Properties',
                             iconData: Icons.add_home_work,
                             onTap: (){}
                         ),
                         HomeContainer(
+                          iconColor: Colors.grey.shade800,
                             name: 'Plot',
                             iconData: Icons.rectangle_outlined,
                             onTap: (){
@@ -49,6 +50,7 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                            iconColor: Colors.green.shade800,
                             name: 'House',
                             iconData: Icons.house_rounded,
                             onTap: (){
@@ -56,6 +58,7 @@ class _BuyPageState extends State<BuyPage> {
                             }
                         ),
                         HomeContainer(
+                            iconColor: Colors.orange.shade800,
                             name: 'Shop',
                             iconData: Icons.add_business_rounded,
                             onTap: (){}
@@ -67,6 +70,7 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                            iconColor: Colors.lightBlueAccent.shade400,
                             name: 'Flat',
                             iconData: Icons.business_rounded,
                             onTap: (){
@@ -74,6 +78,7 @@ class _BuyPageState extends State<BuyPage> {
                             }
                         ),
                         HomeContainer(
+                            iconColor: Colors.brown.shade800,
                             name: 'Office',
                             iconData: Icons.business_center_rounded,
                             onTap: (){}
@@ -85,11 +90,13 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                            iconColor: Colors.deepPurple,
                             name: 'Showroom',
                             iconData: Icons.storefront,
                             onTap: (){}
                         ),
                         HomeContainer(
+                            iconColor: Colors.grey.shade500,
                             name: 'Factory',
                             iconData: Icons.factory,
                             onTap: (){}
@@ -101,12 +108,14 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
-                            name: 'Commercial',
+                            iconColor: Colors.lightGreen,
+                            name: 'Commercial Land',
                             iconData: Icons.location_city,
                             onTap: (){}
                         ),
                         HomeContainer(
-                            name: 'Agriculture',
+                          iconColor: Colors.red.shade800,
+                            name: 'Agricultural Land',
                             iconData: Icons.agriculture,
                             onTap: (){}
                         )
@@ -117,11 +126,13 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                          iconColor: Colors.blue.shade800,
                             name: 'Guest Room',
                             iconData: Icons.person,
                             onTap: (){}
                         ),
                         HomeContainer(
+                          iconColor: Colors.black,
                             name: 'Gym',
                             iconData: Icons.fitness_center_rounded,
                             onTap: (){}
@@ -133,11 +144,13 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
-                            name: 'Weighbridge',
+                          iconColor: Colors.grey.shade700,
+                            name: 'Weighbridge\n( Dharam Kanta )',
                             iconData: Icons.local_shipping,
                             onTap: (){}
                         ),
                         HomeContainer(
+                          iconColor: Colors.redAccent.shade700,
                             name: 'Petrol Pump',
                             iconData: Icons.local_gas_station_rounded,
                             onTap: (){}
@@ -149,11 +162,13 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                          iconColor: Colors.brown.shade400,
                             name: 'WareHouse',
                             iconData: Icons.warehouse_rounded,
                             onTap: (){}
                         ),
                         HomeContainer(
+                          iconColor: Colors.lime,
                             name: 'Hotel',
                             iconData: Icons.hotel,
                             onTap: (){}
@@ -165,11 +180,13 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                          iconColor: Colors.deepPurple,
                             name: 'Resort',
                             iconData: Icons.holiday_village_rounded,
                             onTap: (){}
                         ),
                         HomeContainer(
+                          iconColor: Colors.grey.shade400,
                             name: 'Banquet Hall',
                             iconData: Icons.room_service_rounded,
                             onTap: (){}
@@ -181,11 +198,13 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                          iconColor: Colors.red.shade300,
                             name: 'Restaurant',
                             iconData: Icons.fastfood_sharp,
                             onTap: (){}
                         ),
                         HomeContainer(
+                          iconColor: Colors.blue.shade800,
                             name: 'Schools',
                             iconData: Icons.school_rounded,
                             onTap: (){}
@@ -197,6 +216,7 @@ class _BuyPageState extends State<BuyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         HomeContainer(
+                          iconColor: Colors.red,
                             name: 'Hospital',
                             iconData: Icons.local_hospital_rounded,
                             onTap: (){}

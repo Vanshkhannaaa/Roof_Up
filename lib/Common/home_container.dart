@@ -5,8 +5,9 @@ class HomeContainer extends StatelessWidget {
   final String? name;
   IconData? iconData;
   final VoidCallback? onTap;
+  final Color? iconColor;
 
-  HomeContainer({super.key, required this.name,required this.iconData,required this.onTap});
+  HomeContainer({super.key, required this.name,required this.iconData,required this.onTap,this.iconColor});
 
   @override
   Widget build(BuildContext context) {
@@ -27,24 +28,17 @@ class HomeContainer extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              height: 65,
-              width: 65,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blue.shade50
-              ),
-              child: Icon(
-                iconData,
-                color: Colors.blue.shade800,
-                size: 40,
-              ),
+            Icon(
+              iconData,
+              color: iconColor,
+              size: 50,
             ),//icon
             Center(
               child: Text('${name}',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600
+                    fontWeight: FontWeight.w600,
                 ),
               ),
             )

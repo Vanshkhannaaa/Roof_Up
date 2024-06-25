@@ -8,6 +8,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: home?true:false,
       automaticallyImplyLeading: !home,
       flexibleSpace: Container(
         decoration: BoxDecoration(
@@ -30,13 +31,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
-      title: Text(
+      title:
+      // home
+      //     ? ClipRRect(
+      //   borderRadius: BorderRadius.circular(10), // Adjust the radius for rounded corners
+      //   child: Image.asset('assets/images/canva.png',
+      //     height: kToolbarHeight - 15, // Adjust the height as needed
+      //   ),
+      // )
+      //     :
+      Text(
         '${name}',
         style: TextStyle(
             color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
       ),
       backgroundColor: Colors.blue.shade800,
-      centerTitle: true,
       surfaceTintColor: Colors.blue.shade800,
     );
   }
