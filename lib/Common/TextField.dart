@@ -7,14 +7,20 @@ class CustomTextField extends StatelessWidget {
   final TextInputType type;
   final TextEditingController? controller;
 
-  const CustomTextField({super.key,required this.title, required this.hint,required this.type,this.controller});
+  const CustomTextField(
+      {super.key,
+        required this.title,
+        required this.hint,
+        required this.type,
+        this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text( title,
+        Text(
+          title,
           style: TextStyle(
             fontWeight: FontWeight.w500,
           ),
@@ -30,19 +36,13 @@ class CustomTextField extends StatelessWidget {
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 15),
                 hintText: hint,
-                hintStyle: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 14
-                ),
+                hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.grey.shade700)
-                ),
+                    borderSide: BorderSide(color: Colors.grey.shade700)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.blue.shade800)
-                )
-            ),
+                    borderSide: BorderSide(color: Colors.blue.shade800))),
           ),
         )
       ],
@@ -54,20 +54,20 @@ class SmallTextField extends StatelessWidget {
   final String title;
   final String hint;
   final TextInputType type;
-  const SmallTextField({super.key,required this.title, required this.hint,required this.type});
+  const SmallTextField(
+      {super.key, required this.title, required this.hint, required this.type});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width*0.37,
+      width: MediaQuery.of(context).size.width * 0.37,
       color: Colors.white60,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title,
-            style: TextStyle(
-                fontWeight: FontWeight.w500
-            ),
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 5),
           TextField(
@@ -76,19 +76,13 @@ class SmallTextField extends StatelessWidget {
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 15),
                 hintText: hint,
-                hintStyle: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 14
-                ),
+                hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.grey.shade700)
-                ),
+                    borderSide: BorderSide(color: Colors.grey.shade700)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.blue.shade800)
-                )
-            ),
+                    borderSide: BorderSide(color: Colors.blue.shade800))),
           ),
         ],
       ),
@@ -99,7 +93,7 @@ class SmallTextField extends StatelessWidget {
 class CustomButton extends StatelessWidget {
   final String name;
   final VoidCallback? onpressed;
-  const CustomButton({super.key,required this.name, required this.onpressed});
+  const CustomButton({super.key, required this.name, required this.onpressed});
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +101,6 @@ class CustomButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-
             backgroundColor: Color(0xff1877F2), // Background color
             shadowColor: Colors.black, // Shadow color
             elevation: 5, // Elevation
@@ -117,21 +110,26 @@ class CustomButton extends StatelessWidget {
             ),
           ),
           onPressed: onpressed,
-          child: Text(name,
+          child: Text(
+            name,
             style: TextStyle(
               color: Colors.white,
             ),
-          )
-      ),
+          )),
     );
   }
 }
 
 class AreaField extends StatefulWidget {
   final TextEditingController? controller;
+  final String initialValue;
   final ValueChanged<String>? onUnitSelected;
 
-  const AreaField({Key? key, required this.controller, this.onUnitSelected})
+  const AreaField(
+      {Key? key,
+        required this.controller,
+        this.onUnitSelected,
+        required this.initialValue})
       : super(key: key);
 
   @override
@@ -139,7 +137,14 @@ class AreaField extends StatefulWidget {
 }
 
 class _AreaFieldState extends State<AreaField> {
-  String selectedUnit = 'Select Unit';
+  late String selectedUnit;
+
+  @override
+  void initState() {
+    selectedUnit =
+    widget.initialValue == '' ? 'Select Unit' : widget.initialValue;
+    super.initState();
+  }
 
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -285,16 +290,17 @@ class _AreaFieldState extends State<AreaField> {
   }
 }
 
-
 class CustomDropdown extends StatefulWidget {
   final List<String> options;
   final String title;
   final String hint;
+  final String? initialValue;
   final ValueChanged<String?>? onChanged;
 
   const CustomDropdown({
     Key? key,
     required this.options,
+    this.initialValue,
     required this.title,
     required this.hint,
     this.onChanged,
@@ -305,10 +311,20 @@ class CustomDropdown extends StatefulWidget {
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
-  String? _selectedValue;
+  late String? _selectedValue;
+
+  @override
+  void initState() {
+    _selectedValue = widget.initialValue ?? null;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.initialValue != null &&
+        !widget.options.contains(widget.initialValue)) {
+      throw Exception('Initial value is not in the options list');
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -341,7 +357,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
               style: TextStyle(color: Colors.black54),
               onChanged: (String? newValue) {
                 setState(() {
-                  _selectedValue = newValue;
+                  _selectedValue = newValue ?? '';
                 });
                 if (widget.onChanged != null) {
                   widget.onChanged!(newValue);

@@ -32,7 +32,7 @@ class _SellGuestRoomState extends State<SellGuestRoom> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-               AreaField(controller: AreaController),
+               AreaField(controller: AreaController,initialValue: '',),
 
                 SizedBox(height: 10,),
 

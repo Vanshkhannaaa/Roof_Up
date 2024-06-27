@@ -36,7 +36,7 @@ class _SellPlotState extends State<SellPlot> {
 
                 SizedBox(height: 10,),
 
-                AreaField(controller: AreaController),
+                AreaField(controller: AreaController,initialValue: '',),
 
                 SizedBox(height: 10,),
 

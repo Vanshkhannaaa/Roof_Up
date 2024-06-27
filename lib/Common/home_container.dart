@@ -82,3 +82,58 @@ class RowValue extends StatelessWidget {
   }
 }
 
+
+class ProfileRow extends StatelessWidget {
+  final String name;
+  final IconData? iconData;
+  final String value;
+
+
+  const ProfileRow({super.key,required this.name,required this.iconData,required this.value,});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(15),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey.shade100
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(
+                  iconData,
+                  color: Colors.grey.shade800,
+                  size: 20),
+              SizedBox(width: 10),
+              Text(name,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade700
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(value,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600
+                ),
+              ),
+              SizedBox(width: 10),
+              Icon(Icons.arrow_forward_ios,size: 15,color: Colors.grey.shade700,)
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+

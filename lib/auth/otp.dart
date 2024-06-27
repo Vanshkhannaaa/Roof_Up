@@ -3,16 +3,57 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:roof_up/Common/TextField.dart';
-import 'package:roof_up/Common/common.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class otppage extends StatelessWidget {
+class otppage extends StatefulWidget {
   final String phoneNumber;
   final String verificationId;
   otppage({required this.phoneNumber, required this.verificationId});
 
+  @override
+  _otppageState createState() => _otppageState();
+}
+
+class _otppageState extends State<otppage> {
   final _otpController = TextEditingController();
-  bool isLoading = false;
+  bool _isButtonLoading = false;
+
+  Future<void> _submitOTP() async {
+    setState(() {
+      _isButtonLoading = true;
+    });
+
+    try {
+      final PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId,
+        smsCode: _otpController.text.trim(),
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
+        var userRef = await FirebaseFirestore.instance.collection('users').add({
+          'phoneNumber': widget.phoneNumber,
+          'name': "",
+        });
+
+        String id = userRef.id;
+        await userRef.update({'uid': id});
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+
+        // Navigate to the main page after successful login
+        Navigator.of(context).pushNamed('/nav');
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to verify OTP: ${e.toString()}')),
+      );
+    } finally {
+      setState(() {
+        _isButtonLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +61,28 @@ class otppage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      body: isLoading ? CommonClass.loader(context) :Padding(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20),
-              Text('Verification Code',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: GoogleFonts.kanit().fontFamily)),
               Text(
-                'Enter vertification code sent at : \n' + "+91 $phoneNumber",
-                style: TextStyle(color: Colors.grey.shade700, fontSize: 13),
+                'Verification Code',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: GoogleFonts.kanit().fontFamily,
+                ),
               ),
-              SizedBox(
-                height: 20,
+              Text(
+                'Enter verification code sent to:\n+91 ${widget.phoneNumber}',
+                style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 13,
+                ),
               ),
+              SizedBox(height: 20),
               Container(
                 width: MediaQuery.of(context).size.width,
                 color: Colors.white60,
@@ -52,58 +97,55 @@ class otppage extends StatelessWidget {
                   cursorColor: Colors.blue.shade800,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    letterSpacing: 10
+                    letterSpacing: 10,
                   ),
                   decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      labelText: 'OTP',
-                      labelStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey.shade400
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey.shade400)
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.blue.shade800)
-                      )
+                    contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                    labelText: 'OTP',
+                    labelStyle: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade400,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.blue.shade800),
+                    ),
                   ),
                 ),
               ),
+              SizedBox(height: 20),
               SizedBox(
-                height: 20,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isButtonLoading ? null : _submitOTP,
+                  style: ElevatedButton.styleFrom(
+                    shadowColor: Colors.black, // Shadow color
+                    elevation: 5,
+                    backgroundColor: Color(0xff1877F2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                    ),
+                  ),
+                  child: _isButtonLoading
+                      ? SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                      : Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
-              CustomButton(
-                  name: 'Submit',
-                  onpressed: () async {
-                    isLoading = true;
-                    print(_otpController.text.trim());
-                    PhoneAuthCredential cred =
-                    await PhoneAuthProvider.credential(
-                        verificationId: verificationId, smsCode: _otpController.text.trim());
-                    FirebaseAuth.instance
-                        .signInWithCredential(cred)
-                        .then((value) async {
-                      print("hi");
-                      print(value);
-                      var userRef = await FirebaseFirestore.instance
-                          .collection('users')
-                          .add({
-                        'phoneNumber': phoneNumber,
-                        'name': "",
-                      });
-                      String id = userRef.id;
-                      userRef.update({
-                        'uid': id,
-                      });
-                      // globals.uid = id;
-                      Navigator.of(context).pushNamed('/nav');
-                      isLoading = false;
-                    });
-                  }
-              )
+              SizedBox(height: 20),
             ],
           ),
         ),

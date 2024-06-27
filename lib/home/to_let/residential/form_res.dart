@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:roof_up/home/sell/add_details.dart';
 import '../../../Common/TextField.dart';
 import '../../../Common/appBar.dart';
+import '../../sell/add_details.dart';
 
-class SellShop extends StatefulWidget {
-  const SellShop({super.key});
+class ResForm extends StatefulWidget {
+
+  const ResForm({super.key});
 
   @override
-  State<SellShop> createState() => _SellShopState();
+  State<ResForm> createState() => _ResFormState();
 }
 
-class _SellShopState extends State<SellShop> {
-  TextEditingController AreaController = TextEditingController();
-  TextEditingController ValueController = TextEditingController();
-  TextEditingController YearController = TextEditingController();
-  TextEditingController LoanController = TextEditingController();
-  TextEditingController FloorController = TextEditingController();
-  TextEditingController PropertyController = TextEditingController();
-  TextEditingController MobileController = TextEditingController();
-  String facing = '';
+class _ResFormState extends State<ResForm> {
   String areaUnit = '';
-  String availability = '';
+  String facing = '';
+  String furnishingDetails = '';
   Map<String, dynamic> propertyData = {};
+
+
+  TextEditingController AreaController =  TextEditingController();
+  TextEditingController ValueController =  TextEditingController();
+  TextEditingController AddressController =  TextEditingController();
+  TextEditingController PropertyController =  TextEditingController();
+  TextEditingController BedroomController =  TextEditingController();
+  TextEditingController BathroomController =  TextEditingController();
+  TextEditingController MobileController =  TextEditingController();
 
   void createDetails() {
     if (AreaController.text.trim() == '') {
@@ -34,19 +37,25 @@ class _SellShopState extends State<SellShop> {
         content: Text("Enter value"),
         duration: Duration(seconds: 3),
       ));
-    } else if (YearController.text.trim() == '') {
+    }else if (AddressController.text.trim() == '') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Enter year"),
+        content: Text("Enter Address"),
         duration: Duration(seconds: 3),
       ));
-    } else if (LoanController.text.trim() == '') {
+    }
+     else if (PropertyController.text.trim() == '') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Enter loan"),
+        content: Text("Enter property on floor"),
+        duration: Duration(seconds: 3),
+      ));}
+    else if (BedroomController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter bedroom"),
         duration: Duration(seconds: 3),
       ));
-    } else if (FloorController.text.trim() == '') {
+    } else if (BathroomController.text.trim() == '') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Enter Floor"),
+        content: Text("Enter bathroom"),
         duration: Duration(seconds: 3),
       ));
     } else if (MobileController.text.trim() == '') {
@@ -64,21 +73,22 @@ class _SellShopState extends State<SellShop> {
         content: Text("Select area unit"),
         duration: Duration(seconds: 3),
       ));
-    } else if (availability == '') {
+    } else if (furnishingDetails == '') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Select availability"),
+        content: Text("Select furnishing details"),
         duration: Duration(seconds: 3),
       ));
     } else {
       propertyData = {
         'area': AreaController.text.trim(),
         'value': ValueController.text.trim(),
-        'year': YearController.text.trim(),
-        'loan': LoanController.text.trim(),
-        'floor': FloorController.text.trim(),
+        'address' : AddressController.text.trim(),
+        'property': PropertyController.text.trim(),
+        'bedroom': BedroomController.text.trim(),
+        'bathroom': BathroomController.text.trim(),
         'mobile': MobileController.text.trim(),
         'facing': facing,
-        'availability': availability,
+        'furnishingDetails': furnishingDetails,
         'areaUnit': areaUnit,
         'propertyType': 'house',
       };
@@ -87,43 +97,59 @@ class _SellShopState extends State<SellShop> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(name: 'Sell', home: false),
+      appBar: CustomAppBar(name: 'To-Let', home: false),
+
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 20.0, left: 20, right: 20),
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 10),
                 AreaField(
-                  controller: AreaController,
                   initialValue: '',
-                  onUnitSelected: (String? unit) {
-                    setState(() {
-                      areaUnit = unit ?? '';
-                    });
-                  },
+                    onUnitSelected: (String? unit) {
+                      setState(() {
+                        areaUnit = unit ?? '';
+                      });
+                    },
+                    controller: AreaController
                 ),
                 SizedBox(
                   height: 10,
                 ),
+
                 CustomTextField(
                     controller: ValueController,
-                    title: 'Estimated Value (in \u20b9)',
+                    title: 'Rent (in \u20b9)',
                     hint: 'Enter value',
                     type: TextInputType.number),
-                SizedBox(height: 10),
+
+                SizedBox(
+                  height: 10,
+                ),
+
+                CustomTextField(
+                  controller: AddressController,
+                    title: 'Address',
+                    hint: 'Enter Address',
+                    type: TextInputType.text),
+
+                SizedBox(
+                  height: 10,
+                ),
+
                 CustomDropdown(
                     title: 'Facing',
-                    onChanged: (value) {
+                    hint: 'Select Facing',
+                    onChanged: (String? newValue) {
                       setState(() {
-                        facing = value ?? '';
+                        facing = newValue ?? "";
                       });
                     },
-                    hint: 'Select Facing',
                     options: [
                       'North',
                       'South',
@@ -134,55 +160,57 @@ class _SellShopState extends State<SellShop> {
                       'South-East',
                       'South-West',
                     ]),
-                SizedBox(height: 10),
-                CustomTextField(
-                    controller: YearController,
-                    title: 'Year built',
-                    hint: 'Built in',
-                    type: TextInputType.number),
+
                 SizedBox(
                   height: 10,
                 ),
-                CustomTextField(
-                    controller: LoanController,
-                    title: 'Estimated mortgage balance',
-                    hint: 'Enter mortgage',
-                    type: TextInputType.text),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextField(
-                    controller: FloorController,
-                    title: 'Total Floors',
-                    hint: 'Enter no. of floors',
-                    type: TextInputType.number),
-                SizedBox(
-                  height: 10,
-                ),
+
                 CustomTextField(
                     controller: PropertyController,
-                    title: 'Property on floor (optional)',
-                    hint: 'Property on floor',
+                    title: 'Property on floor',
+                    hint: 'Enter property on floor',
+                    type: TextInputType.number),
+
+                SizedBox(
+                  height: 10,
+                ),
+
+                CustomTextField(
+                    controller: BedroomController,
+                    title: 'No. of bedrooms',
+                    hint: 'Enter no. of bedrooms',
+                    type: TextInputType.number),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextField(
+                    controller: BathroomController,
+                    title: 'No. of bathrooms',
+                    hint: 'Enter no. of bathrooms',
                     type: TextInputType.number),
                 SizedBox(
                   height: 10,
                 ),
                 CustomDropdown(
-                    options: ['Ready to move', 'Under construction'],
-                    onChanged: (value) {
+                    onChanged: (String? newValue) {
                       setState(() {
-                        availability = value ?? '';
+                        furnishingDetails = newValue ?? "";
                       });
                     },
-                    title: 'Availability',
-                    hint: 'Select Availability'),
+                    options: [
+                      'Fully furnished',
+                      'Semi furnished',
+                      'Unfurnished'
+                    ],
+                    title: 'Furnishing details',
+                    hint: 'Select Details'),
                 SizedBox(
                   height: 10,
                 ),
                 CustomTextField(
                     controller: MobileController,
                     title: 'Mobile No.',
-                    hint: 'Enter Mobile No.',
+                    hint: 'Enter mobile no.',
                     type: TextInputType.number),
                 SizedBox(
                   height: 10,
@@ -192,7 +220,7 @@ class _SellShopState extends State<SellShop> {
                     onpressed: () {
                       createDetails();
                     }),
-                SizedBox(height: 10)
+                SizedBox(height: 10),
               ],
             ),
           ),

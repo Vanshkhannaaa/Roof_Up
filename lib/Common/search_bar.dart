@@ -91,24 +91,17 @@ class SmallSearchBar extends StatelessWidget {
                   TextStyle(fontWeight: FontWeight.w400, fontSize: 12)),
             ),
           ),
-          Container(
-            height: 50,
-            color: Colors.yellow,
-            child: Stack(
-              children: [
-                Positioned(
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.filter_list,
-                        color: Colors.blue.shade800,
-                        size: 15,
-                      )),
-                ),
-              ],
-            ),
+          Column(
+            children: [
+              Icon(
+                Icons.filter_list,
+                color: Colors.blue.shade800,
+              ),
+              SizedBox(height: 5),
+              Text('Filter',style: TextStyle(
+                fontSize: 12
+              ),)
+            ],
           )
         ],
       ),

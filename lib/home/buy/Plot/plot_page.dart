@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:roof_up/Common/appBar.dart';
 import '../../../Common/home_container.dart';
 import '../../../Common/search_bar.dart';
-
 
 class PlotPage extends StatefulWidget {
   const PlotPage({super.key});
@@ -15,18 +14,12 @@ class _PlotPageState extends State<PlotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Plot',style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 20
-        ),),
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(name: 'Plot',home: false),
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
+              padding: EdgeInsets.only(top: 20),
               child: Column(
                 children: [
                   SizedBox(height: 60),
@@ -34,11 +27,13 @@ class _PlotPageState extends State<PlotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       HomeContainer(
-                          name: 'Residential\nPlot',
+                        iconColor: Colors.green.shade800,
+                          name: 'residential\nPlot',
                           iconData: Icons.home_rounded,
                           onTap: (){
                           }),
                       HomeContainer(
+                        iconColor: Colors.lightBlueAccent.shade400,
                           name: 'Commercial\nPlot',
                           iconData: Icons.location_city,
                           onTap: (){
@@ -50,11 +45,13 @@ class _PlotPageState extends State<PlotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       HomeContainer(
+                        iconColor: Colors.orange.shade800,
                           name: 'Shop\nPlot',
                           iconData: Icons.add_business_rounded,
                           onTap: (){
                           }),
                       HomeContainer(
+                        iconColor: Colors.grey.shade500,
                           name: 'Factory\nPlot',
                           iconData: Icons.factory,
                           onTap: (){
@@ -67,6 +64,7 @@ class _PlotPageState extends State<PlotPage> {
                     children: [
                       SizedBox(width: 30),
                       HomeContainer(
+                        iconColor: Colors.brown,
                           name: 'Others',
                           iconData: Icons.format_list_bulleted_outlined,
                           onTap: (){
@@ -77,7 +75,11 @@ class _PlotPageState extends State<PlotPage> {
               ),
             ),
           ),
-          CustomSearchBar()
+          Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              padding: EdgeInsets.only(top: 20),
+              child:CustomSearchBar())
         ],
       ),
     );

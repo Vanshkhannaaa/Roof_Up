@@ -27,12 +27,14 @@ class _PlotPageState extends State<SellPlotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       HomeContainer(
-                          name: 'Residential\nPlot',
+                        iconColor: Colors.green.shade800,
+                          name: 'residential\nPlot',
                           iconData: Icons.home_rounded,
                           onTap: (){
                             Navigator.pushNamed(context, '/sellplot');
                           }),
                       HomeContainer(
+                        iconColor: Colors.lightBlueAccent.shade400,
                           name: 'Commercial\nPlot',
                           iconData: Icons.location_city,
                           onTap: (){
@@ -45,12 +47,14 @@ class _PlotPageState extends State<SellPlotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       HomeContainer(
+                        iconColor: Colors.orange.shade800,
                           name: 'Shop\nPlot',
                           iconData: Icons.add_business_rounded,
                           onTap: (){
                             Navigator.pushNamed(context, '/sellplot');
                           }),
                       HomeContainer(
+                        iconColor: Colors.grey.shade500,
                           name: 'Factory\nPlot',
                           iconData: Icons.factory,
                           onTap: (){
@@ -64,6 +68,7 @@ class _PlotPageState extends State<SellPlotPage> {
                     children: [
                       SizedBox(width: 30),
                       HomeContainer(
+                        iconColor: Colors.brown,
                           name: 'Others',
                           iconData: Icons.format_list_bulleted_outlined,
                           onTap: (){

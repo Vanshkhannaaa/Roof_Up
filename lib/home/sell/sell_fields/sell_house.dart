@@ -1,49 +1,160 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:roof_up/home/sell/add_details.dart';
 import '../../../Common/TextField.dart';
 import '../../../Common/appBar.dart';
 
 class SellHouse extends StatefulWidget {
-  const SellHouse({super.key});
+  final Map<String, dynamic>? propertyData;
+  const SellHouse({super.key, this.propertyData});
 
   @override
   State<SellHouse> createState() => _SellHouseState();
 }
 
 class _SellHouseState extends State<SellHouse> {
-  TextEditingController AreaController = TextEditingController();
-  TextEditingController ValueController = TextEditingController();
-  TextEditingController YearController = TextEditingController();
-  TextEditingController LoanController = TextEditingController();
-  TextEditingController FloorController = TextEditingController();
-  TextEditingController PropertyController = TextEditingController();
-  TextEditingController BedroomController = TextEditingController();
-  TextEditingController BathroomController = TextEditingController();
-  TextEditingController MobileController = TextEditingController();
+  late TextEditingController AreaController;
+  late TextEditingController ValueController;
+  late TextEditingController YearController;
+  late TextEditingController LoanController;
+  late TextEditingController FloorController;
+  late TextEditingController BedroomController;
+  late TextEditingController BathroomController;
+  late TextEditingController MobileController;
   String facing = '';
   String areaUnit = '';
   String availability = '';
   String furnishingDetails = '';
   Map<String, dynamic> propertyData = {};
 
+  @override
+  void initState() {
+    print(widget.propertyData);
+    print(FirebaseAuth.instance.currentUser!.phoneNumber);
+    AreaController = TextEditingController(
+        text: widget.propertyData == null ? '' : widget.propertyData!['area']);
+    ValueController = TextEditingController(
+        text: widget.propertyData == null ? '' : widget.propertyData!['value']);
+    YearController = TextEditingController(
+        text: widget.propertyData == null ? '' : widget.propertyData!['year']);
+    LoanController = TextEditingController(
+        text: widget.propertyData == null ? '' : widget.propertyData!['loan']);
+    FloorController = TextEditingController(
+        text: widget.propertyData == null ? '' : widget.propertyData!['floor']);
+    BedroomController = TextEditingController(
+        text:
+        widget.propertyData == null ? '' : widget.propertyData!['bedroom']);
+    BathroomController = TextEditingController(
+        text: widget.propertyData == null
+            ? ''
+            : widget.propertyData!['bathroom']);
+    MobileController = TextEditingController(
+        text: widget.propertyData == null
+            ? FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)
+            : widget.propertyData!['mobile']);
+    facing = widget.propertyData == null
+        ? ''
+        : (widget.propertyData!['facing'] ?? '');
+    areaUnit = widget.propertyData == null
+        ? ''
+        : (widget.propertyData!['areaUnit'] ?? '');
+    availability = widget.propertyData == null
+        ? ''
+        : (widget.propertyData!['availability'] ?? '');
+    furnishingDetails = widget.propertyData == null
+        ? ''
+        : (widget.propertyData!['furnishingDetails'] ?? '');
+    setState(() {});
+    super.initState();
+  }
+
   void createDetails() {
-    propertyData = {
-      'area': AreaController.text.trim(),
-      'value': ValueController.text.trim(),
-      'year': YearController.text.trim(),
-      'loan': LoanController.text.trim(),
-      'floor': FloorController.text.trim(),
-      'property': PropertyController.text.trim(),
-      'bedroom': BedroomController.text.trim(),
-      'bathroom': BathroomController.text.trim(),
-      'mobile': MobileController.text.trim(),
-      'facing': facing,
-      'availability': availability,
-      'furnishingDetails': furnishingDetails,
-      'areaUnit': areaUnit,
-    };
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddDetails(data: propertyData)));
+    if (AreaController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter Area"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (ValueController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter value"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (YearController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter year"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (LoanController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter loan"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (FloorController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter Floor"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (BedroomController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter bedroom"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (BathroomController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter bathroom"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (MobileController.text.trim() == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter mobile"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (facing == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Select facing"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (areaUnit == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Select area unit"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (availability == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Select availability"),
+        duration: Duration(seconds: 3),
+      ));
+    } else if (furnishingDetails == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Select furnishing details"),
+        duration: Duration(seconds: 3),
+      ));
+    } else {
+      propertyData = {
+        'area': AreaController.text.trim(),
+        'value': ValueController.text.trim(),
+        'year': YearController.text.trim(),
+        'loan': LoanController.text.trim(),
+        'floor': FloorController.text.trim(),
+        'bedroom': BedroomController.text.trim(),
+        'bathroom': BathroomController.text.trim(),
+        'mobile': MobileController.text.trim(),
+        'facing': facing,
+        'availability': availability,
+        'furnishingDetails': furnishingDetails,
+        'areaUnit': areaUnit,
+        'propertyType': 'house',
+        'sellType': 'sale',
+      };
+      if (widget.propertyData != null) {
+        propertyData['imageData'] = widget.propertyData!['imageData'];
+        propertyData['propertyDetails'] =
+        widget.propertyData!['propertyDetails'];
+      }
+
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AddDetails(data: propertyData)));
+    }
   }
 
   @override
@@ -57,6 +168,7 @@ class _SellHouseState extends State<SellHouse> {
             child: Column(
               children: [
                 AreaField(
+                    initialValue: areaUnit,
                     onUnitSelected: (String? unit) {
                       setState(() {
                         areaUnit = unit ?? '';
@@ -75,23 +187,25 @@ class _SellHouseState extends State<SellHouse> {
                   height: 10,
                 ),
                 CustomDropdown(
-                    title: 'Facing',
-                    hint: 'Select Facing',
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        facing = newValue ?? "";
-                      });
-                    },
-                    options: [
-                      'North',
-                      'South',
-                      'West',
-                      'East',
-                      'North-East',
-                      'North-West',
-                      'South-East',
-                      'South-West',
-                    ]),
+                  title: 'Facing',
+                  hint: 'Select Facing',
+                  initialValue: facing.isNotEmpty ? facing : null,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      facing = newValue ?? "";
+                    });
+                  },
+                  options: [
+                    'North',
+                    'South',
+                    'West',
+                    'East',
+                    'North-East',
+                    'North-West',
+                    'South-East',
+                    'South-West',
+                  ],
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -105,9 +219,9 @@ class _SellHouseState extends State<SellHouse> {
                 ),
                 CustomTextField(
                     controller: LoanController,
-                    title: 'Estimated Mortgage Balance',
+                    title: 'Estimated Mortgage Balance (in \u20b9)',
                     hint: 'Enter Mortgage',
-                    type: TextInputType.text),
+                    type: TextInputType.number),
                 SizedBox(
                   height: 10,
                 ),
@@ -115,14 +229,6 @@ class _SellHouseState extends State<SellHouse> {
                     controller: FloorController,
                     title: 'Floor Details',
                     hint: 'Total Floors',
-                    type: TextInputType.number),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextField(
-                    controller: PropertyController,
-                    title: 'Property on floor (optional)',
-                    hint: 'Your floor',
                     type: TextInputType.number),
                 SizedBox(
                   height: 10,
@@ -144,6 +250,7 @@ class _SellHouseState extends State<SellHouse> {
                   height: 10,
                 ),
                 CustomDropdown(
+                    initialValue: availability != '' ? availability : null,
                     onChanged: (String? newValue) {
                       setState(() {
                         availability = newValue ?? "";
@@ -156,6 +263,8 @@ class _SellHouseState extends State<SellHouse> {
                   height: 10,
                 ),
                 CustomDropdown(
+                    initialValue:
+                    furnishingDetails != '' ? furnishingDetails : null,
                     onChanged: (String? newValue) {
                       setState(() {
                         furnishingDetails = newValue ?? "";

@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../Common/appBar.dart';
 import '../Common/home_container.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,7 +34,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(name: 'Roof Up',home: true,),
+      appBar:
+      // AppBar(
+      //   title: Text('Roof Up',
+      //     style: TextStyle(
+      //         fontFamily: GoogleFonts.kanit().fontFamily,
+      //         fontWeight: FontWeight.bold
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      // ),
+      CustomAppBar(name: 'Roof Up',home: true,),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: SafeArea(
@@ -117,7 +127,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                     HomeContainer(
                       iconColor: Colors.amber.shade900,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, '/tolet');
+                      },
                       name: 'To-Let',
                       iconData: Icons.add_home_work_outlined,
                     ),
