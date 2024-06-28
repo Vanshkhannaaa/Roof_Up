@@ -168,6 +168,8 @@ class _SellHouseState extends State<SellHouse> {
             child: Column(
               children: [
                 AreaField(
+                    title: 'Area',
+                    hint: 'Enter Area',
                     initialValue: areaUnit,
                     onUnitSelected: (String? unit) {
                       setState(() {

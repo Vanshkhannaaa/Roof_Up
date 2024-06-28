@@ -123,14 +123,18 @@ class CustomButton extends StatelessWidget {
 class AreaField extends StatefulWidget {
   final TextEditingController? controller;
   final String initialValue;
+  final String title;
+  final String hint;
   final ValueChanged<String>? onUnitSelected;
 
-  const AreaField(
-      {Key? key,
-        required this.controller,
-        this.onUnitSelected,
-        required this.initialValue})
-      : super(key: key);
+  const AreaField({
+    Key? key,
+    required this.controller,
+    this.onUnitSelected,
+    required this.initialValue,
+    required this.title,
+    required this.hint,
+  }) : super(key: key);
 
   @override
   State<AreaField> createState() => _AreaFieldState();
@@ -141,9 +145,19 @@ class _AreaFieldState extends State<AreaField> {
 
   @override
   void initState() {
-    selectedUnit =
-    widget.initialValue == '' ? 'Select Unit' : widget.initialValue;
     super.initState();
+    selectedUnit = widget.initialValue == 'Sq' ? 'Select Unit' : widget.initialValue;
+  }
+
+  @override
+  void didUpdateWidget(covariant AreaField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Check if the unit has changed in the parent widget, if so, update selectedUnit
+    if (widget.initialValue != oldWidget.initialValue) {
+      setState(() {
+        selectedUnit = widget.initialValue == 'Sq' ? 'Select Unit' : widget.initialValue;
+      });
+    }
   }
 
   void _showBottomSheet(BuildContext context) {
@@ -160,69 +174,70 @@ class _AreaFieldState extends State<AreaField> {
               topRight: Radius.circular(20.0),
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  'Select Unit',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(
+                    'Select Unit',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-              SizedBox(height: 10),
-              ListTile(
-                title: Text('Sq.ft'),
-                onTap: () {
-                  setState(() {
-                    selectedUnit = 'Sq.ft';
-                  });
-                  Navigator.pop(context);
-                  widget.onUnitSelected?.call('Sq.ft');
-                },
-              ),
-              Divider(),
-              ListTile(
-                title: Text('Sq.m'),
-                onTap: () {
-                  setState(() {
-                    selectedUnit = 'Sq.m';
-                  });
-                  Navigator.pop(context);
-                  widget.onUnitSelected?.call('Sq.m');
-                },
-              ),
-              Divider(),
-              ListTile(
-                title: Text('Acres'),
-                onTap: () {
-                  setState(() {
-                    selectedUnit = 'Acres';
-                  });
-                  Navigator.pop(context);
-                  widget.onUnitSelected?.call('Acres');
-                },
-              ),
-              Divider(),
-              ListTile(
-                title: Text('Hectares'),
-                onTap: () {
-                  setState(() {
-                    selectedUnit = 'Hectares';
-                  });
-                  Navigator.pop(context);
-                  widget.onUnitSelected?.call('Hectares');
-                },
-              ),
-            ],
+                SizedBox(height: 10),
+                ListTile(
+                  title: Text('Sq.ft'),
+                  onTap: () {
+                    _onUnitSelected('Sq.ft');
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Sq.m'),
+                  onTap: () {
+                    _onUnitSelected('Sq.m');
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Acres'),
+                  onTap: () {
+                    _onUnitSelected('Acres');
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Sq.yard'),
+                  onTap: () {
+                    _onUnitSelected('Sq.yard');
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Hectares'),
+                  onTap: () {
+                    _onUnitSelected('Hectares');
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
     );
+  }
+
+  void _onUnitSelected(String unit) {
+    setState(() {
+      selectedUnit = unit;
+    });
+    Navigator.pop(context);
+    widget.onUnitSelected?.call(unit);
   }
 
   @override
@@ -231,7 +246,7 @@ class _AreaFieldState extends State<AreaField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Area',
+          widget.title,
           style: TextStyle(
             fontWeight: FontWeight.w500,
           ),
@@ -269,7 +284,7 @@ class _AreaFieldState extends State<AreaField> {
                 ),
               ),
               contentPadding: EdgeInsets.symmetric(horizontal: 15),
-              hintText: 'Enter Area',
+              hintText: widget.hint,
               hintStyle: TextStyle(
                 color: Colors.grey.shade400,
                 fontSize: 14,
@@ -289,6 +304,7 @@ class _AreaFieldState extends State<AreaField> {
     );
   }
 }
+
 
 class CustomDropdown extends StatefulWidget {
   final List<String> options;

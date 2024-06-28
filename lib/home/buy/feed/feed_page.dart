@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../Common/search_bar.dart';
 import '../../../Common/globals.dart' as globals;
 
+
 class FeedPage extends StatefulWidget {
   final String propertyType;
   const FeedPage({super.key, required this.propertyType});

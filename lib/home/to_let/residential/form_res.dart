@@ -110,6 +110,8 @@ class _ResFormState extends State<ResForm> {
             child: Column(
               children: [
                 AreaField(
+                    title: 'Area',
+                    hint: 'Enter Area',
                   initialValue: '',
                     onUnitSelected: (String? unit) {
                       setState(() {

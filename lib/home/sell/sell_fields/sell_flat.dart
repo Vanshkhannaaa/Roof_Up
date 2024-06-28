@@ -33,7 +33,11 @@ class _SellFlatState extends State<SellFlat> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                AreaField(controller: AreaController,initialValue: '',),
+                AreaField(
+                  title: 'Area',
+                  hint: 'Enter Area',
+                  controller: AreaController,
+                  initialValue: '',),
 
                 SizedBox(height: 10,),
 

@@ -449,6 +449,7 @@ class _SummaryState extends State<Summary> {
                               value: widget.propertyData == null
                                   ? propertyData['availability']
                                   : widget.propertyData!['availability']),
+
                           SizedBox(height: 10),
                           Divider(),
                           SizedBox(height: 10),

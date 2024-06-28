@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/home/buy/feed/photo_slider.dart';
 import 'package:roof_up/home/sell/confetti.dart';
-import 'package:roof_up/home/sell/sell_fields/sell_plot/plot_sell_page.dart';
+import 'package:roof_up/home/sell/sell_fields/sell_plot/sell_plot_page.dart';
 import 'package:roof_up/home/to_let/residential/form_res.dart';
 import 'package:roof_up/home/to_let/to_let_page.dart';
 import 'package:roof_up/splash_screen.dart';

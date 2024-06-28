@@ -99,6 +99,8 @@ class _SellShopState extends State<SellShop> {
               children: [
                 SizedBox(height: 10),
                 AreaField(
+                  title: 'Area',
+                  hint: 'Enter Area',
                   controller: AreaController,
                   initialValue: '',
                   onUnitSelected: (String? unit) {
