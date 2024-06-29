@@ -41,7 +41,7 @@ class _ConfettiState extends State<Confetti> {
             child: Center(
               child: Column(
                 mainAxisSize:
-                MainAxisSize.min, // Ensure the Column takes minimum space
+                    MainAxisSize.min, // Ensure the Column takes minimum space
                 children: [
                   Icon(
                     Icons.check_circle_rounded,

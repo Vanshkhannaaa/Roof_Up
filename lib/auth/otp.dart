@@ -22,27 +22,42 @@ class _otppageState extends State<otppage> {
     setState(() {
       _isButtonLoading = true;
     });
-
+    print(widget.phoneNumber);
     try {
       final PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: widget.verificationId,
         smsCode: _otpController.text.trim(),
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
-        var userRef = await FirebaseFirestore.instance.collection('users').add({
-          'phoneNumber': widget.phoneNumber,
-          'name': "",
-        });
-
-        String id = userRef.id;
-        await userRef.update({'uid': id});
-
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((value) async {
+        var userRef = await FirebaseFirestore.instance
+            .collection('users')
+            .where('phoneNumber', isEqualTo: widget.phoneNumber)
+            .get();
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-
-        // Navigate to the main page after successful login
-        Navigator.of(context).pushNamed('/nav');
+        if (userRef.docs.isEmpty) {
+          print("empty");
+          var user = await FirebaseFirestore.instance.collection('users').add({
+            'phoneNumber': widget.phoneNumber,
+            'name': "",
+          });
+          String id = user.id;
+          await user.update({'uid': id});
+          await prefs.setBool('isLoggedIn', true);
+          await prefs.setString('uid', id);
+          Navigator.of(context).pushNamed('/details');
+        } else {
+          print("empty");
+          await prefs.setBool('isLoggedIn', true);
+          await prefs.setString('uid', userRef.docs.first.data()['uid']);
+          if (userRef.docs.first.data()['name'] == '') {
+            Navigator.of(context).pushNamed('/details');
+          } else {
+            Navigator.of(context).pushNamed('/nav');
+          }
+        }
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -127,22 +142,23 @@ class _otppageState extends State<otppage> {
                     elevation: 5,
                     backgroundColor: Color(0xff1877F2),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                      borderRadius:
+                          BorderRadius.circular(10), // Rounded corners
                     ),
                   ),
                   child: _isButtonLoading
                       ? SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
                       : Text(
-                    'Submit',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                          'Submit',
+                          style: TextStyle(color: Colors.white),
+                        ),
                 ),
               ),
               SizedBox(height: 20),

@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../Common/appBar.dart';
 import '../Common/home_container.dart';
 
@@ -14,7 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final List<String> imgList = [
     'assets/images/mem1.jpg',
     'assets/images/mem2.jpg',
@@ -23,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   int _currentIndex = 0;
 
-  void initState(){
+  void initState() {
     print(FirebaseAuth.instance.currentUser);
     super.initState();
   }
@@ -34,17 +32,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar:
-      // AppBar(
-      //   title: Text('Roof Up',
-      //     style: TextStyle(
-      //         fontFamily: GoogleFonts.kanit().fontFamily,
-      //         fontWeight: FontWeight.bold
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      // ),
-      CustomAppBar(name: 'Roof Up',home: true,),
+      appBar: CustomAppBar(
+        name: 'Roof Up',
+        home: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: SafeArea(
@@ -61,7 +52,9 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: CarouselSlider(
-                          items: imgList.map((item) => _buildCarouselItem(context, item)).toList(),
+                          items: imgList
+                              .map((item) => _buildCarouselItem(context, item))
+                              .toList(),
                           options: CarouselOptions(
                             animateToClosest: true,
                             height: 150.0,
@@ -91,9 +84,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 10),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -128,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                     HomeContainer(
                       iconColor: Colors.amber.shade900,
                       onTap: () {
-                        Navigator.pushNamed(context, '/tolet');
+                        Navigator.of(context).pushNamed('/tolet');
                       },
                       name: 'To-Let',
                       iconData: Icons.add_home_work_outlined,
@@ -179,7 +170,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 15,)
+                SizedBox(
+                  height: 15,
+                )
               ],
             ),
           ),
@@ -192,7 +185,8 @@ class _HomePageState extends State<HomePage> {
     return Builder(
       builder: (BuildContext context) {
         return Container(
-          width: MediaQuery.of(context).size.width * 0.86, // Match the container width
+          width: MediaQuery.of(context).size.width *
+              0.86, // Match the container width
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -220,9 +214,8 @@ class _HomePageState extends State<HomePage> {
             margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: (_currentIndex == entry.key
-                  ? Colors.white
-                  : Colors.grey).withOpacity(0.8), // Use more prominent color
+              color: (_currentIndex == entry.key ? Colors.white : Colors.grey)
+                  .withOpacity(0.8), // Use more prominent color
             ),
           ),
         );

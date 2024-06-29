@@ -4,7 +4,6 @@ import '../../../Common/appBar.dart';
 import '../../sell/add_details.dart';
 
 class ResForm extends StatefulWidget {
-
   const ResForm({super.key});
 
   @override
@@ -17,14 +16,13 @@ class _ResFormState extends State<ResForm> {
   String furnishingDetails = '';
   Map<String, dynamic> propertyData = {};
 
-
-  TextEditingController AreaController =  TextEditingController();
-  TextEditingController ValueController =  TextEditingController();
-  TextEditingController AddressController =  TextEditingController();
-  TextEditingController PropertyController =  TextEditingController();
-  TextEditingController BedroomController =  TextEditingController();
-  TextEditingController BathroomController =  TextEditingController();
-  TextEditingController MobileController =  TextEditingController();
+  TextEditingController AreaController = TextEditingController();
+  TextEditingController ValueController = TextEditingController();
+  TextEditingController AddressController = TextEditingController();
+  TextEditingController PropertyController = TextEditingController();
+  TextEditingController BedroomController = TextEditingController();
+  TextEditingController BathroomController = TextEditingController();
+  TextEditingController MobileController = TextEditingController();
 
   void createDetails() {
     if (AreaController.text.trim() == '') {
@@ -37,18 +35,17 @@ class _ResFormState extends State<ResForm> {
         content: Text("Enter value"),
         duration: Duration(seconds: 3),
       ));
-    }else if (AddressController.text.trim() == '') {
+    } else if (AddressController.text.trim() == '') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Enter Address"),
         duration: Duration(seconds: 3),
       ));
-    }
-     else if (PropertyController.text.trim() == '') {
+    } else if (PropertyController.text.trim() == '') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Enter property on floor"),
         duration: Duration(seconds: 3),
-      ));}
-    else if (BedroomController.text.trim() == '') {
+      ));
+    } else if (BedroomController.text.trim() == '') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Enter bedroom"),
         duration: Duration(seconds: 3),
@@ -82,7 +79,7 @@ class _ResFormState extends State<ResForm> {
       propertyData = {
         'area': AreaController.text.trim(),
         'value': ValueController.text.trim(),
-        'address' : AddressController.text.trim(),
+        'address': AddressController.text.trim(),
         'property': PropertyController.text.trim(),
         'bedroom': BedroomController.text.trim(),
         'bathroom': BathroomController.text.trim(),
@@ -97,12 +94,10 @@ class _ResFormState extends State<ResForm> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(name: 'To-Let', home: false),
-
       body: Padding(
         padding: EdgeInsets.only(top: 20.0, left: 20, right: 20),
         child: SafeArea(
@@ -112,38 +107,32 @@ class _ResFormState extends State<ResForm> {
                 AreaField(
                     title: 'Area',
                     hint: 'Enter Area',
-                  initialValue: '',
+                    initialValue: '',
                     onUnitSelected: (String? unit) {
                       setState(() {
                         areaUnit = unit ?? '';
                       });
                     },
-                    controller: AreaController
-                ),
+                    controller: AreaController),
                 SizedBox(
                   height: 10,
                 ),
-
                 CustomTextField(
                     controller: ValueController,
                     title: 'Rent (in \u20b9)',
                     hint: 'Enter value',
                     type: TextInputType.number),
-
                 SizedBox(
                   height: 10,
                 ),
-
                 CustomTextField(
-                  controller: AddressController,
+                    controller: AddressController,
                     title: 'Address',
                     hint: 'Enter Address',
                     type: TextInputType.text),
-
                 SizedBox(
                   height: 10,
                 ),
-
                 CustomDropdown(
                     title: 'Facing',
                     hint: 'Select Facing',
@@ -162,21 +151,17 @@ class _ResFormState extends State<ResForm> {
                       'South-East',
                       'South-West',
                     ]),
-
                 SizedBox(
                   height: 10,
                 ),
-
                 CustomTextField(
                     controller: PropertyController,
                     title: 'Property on floor',
                     hint: 'Enter property on floor',
                     type: TextInputType.number),
-
                 SizedBox(
                   height: 10,
                 ),
-
                 CustomTextField(
                     controller: BedroomController,
                     title: 'No. of bedrooms',

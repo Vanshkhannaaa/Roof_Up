@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../Common/search_bar.dart';
 import '../../../Common/globals.dart' as globals;
 
-
 class FeedPage extends StatefulWidget {
   final String propertyType;
   const FeedPage({super.key, required this.propertyType});
@@ -22,6 +21,7 @@ class _FeedPageState extends State<FeedPage> {
   int _currentIndex = 0;
   final CarouselController _carouselController = CarouselController();
   Map<String, bool> toggleFavorite = {};
+  Map<String, int> currentIndexMap = {};
   final List<String> imgList = [
     'assets/images/img1.jpg',
     'assets/images/img2.jpeg',
@@ -30,16 +30,17 @@ class _FeedPageState extends State<FeedPage> {
 
   void fetchProperties() async {
     var propertyRef =
-    await FirebaseFirestore.instance.collectionGroup('property').get();
+        await FirebaseFirestore.instance.collectionGroup('property').get();
     if (propertyRef.docs.isNotEmpty) {
       setState(() {
         propertyRef.docs.forEach((property) {
-          toggleFavorite[property['propertyId']] = false;
+          toggleFavorite[property['propertyId']] = property['addToFavourite'];
+          currentIndexMap[property['propertyId']] = 0;
           allProperties.add(property.data());
         });
       });
     }
-    print(allProperties);
+    print(currentIndexMap);
   }
 
   @override
@@ -79,12 +80,14 @@ class _FeedPageState extends State<FeedPage> {
                                   comingFromBuy: true,
                                   uid: globals.uid,
                                   propertyId: allProperties[index]
-                                  ['propertyId'])));
+                                      ['propertyId'])));
                     },
                     child: Column(
                       children: [
                         Container(
                           padding: EdgeInsets.all(8.0),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
@@ -106,13 +109,13 @@ class _FeedPageState extends State<FeedPage> {
                                       //     propertyMap['imageUrl'] ?? [];
                                       return Container(
                                         width:
-                                        MediaQuery.of(context).size.width,
+                                            MediaQuery.of(context).size.width,
                                         height:
-                                        MediaQuery.of(context).size.height *
-                                            0.24,
+                                            MediaQuery.of(context).size.height *
+                                                0.24,
                                         child: ClipRRect(
                                           borderRadius:
-                                          BorderRadius.circular(10),
+                                              BorderRadius.circular(10),
                                           child: Image.network(
                                             imageUrl,
                                             fit: BoxFit.cover,
@@ -126,11 +129,13 @@ class _FeedPageState extends State<FeedPage> {
                                       viewportFraction: 1,
                                       initialPage: 0,
                                       autoPlayInterval:
-                                      const Duration(seconds: 5),
+                                          const Duration(seconds: 5),
                                       autoPlayCurve: Curves.fastOutSlowIn,
-                                      onPageChanged: (index, reason) {
+                                      onPageChanged: (indexx, reason) {
                                         setState(() {
-                                          _currentIndex = index;
+                                          currentIndexMap[allProperties[index]
+                                              ['propertyId']] = indexx;
+                                          // _currentIndex = index;
                                         });
                                       },
                                     ),
@@ -143,15 +148,14 @@ class _FeedPageState extends State<FeedPage> {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.grey.shade200
-                                                .withOpacity(0.9),
+                                            color: Colors.grey.shade200.withOpacity(0.9),
                                             borderRadius:
-                                            BorderRadius.circular(20),
+                                                BorderRadius.circular(20),
                                           ),
                                           padding: EdgeInsets.all(10),
                                           child: Text(
                                             allProperties[index]
-                                            ['furnishingDetails'],
+                                                ['furnishingDetails'],
                                             style: TextStyle(
                                                 color: Colors.grey.shade800,
                                                 fontSize: 10,
@@ -163,15 +167,14 @@ class _FeedPageState extends State<FeedPage> {
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.grey.shade200
-                                                .withOpacity(0.9),
+                                            color: Colors.grey.shade200.withOpacity(0.9),
                                             borderRadius:
-                                            BorderRadius.circular(20),
+                                                BorderRadius.circular(20),
                                           ),
                                           padding: EdgeInsets.all(10),
                                           child: Text(
                                             allProperties[index]
-                                            ['availability'],
+                                                ['availability'],
                                             style: TextStyle(
                                                 color: Colors.grey.shade800,
                                                 fontSize: 10,
@@ -186,7 +189,8 @@ class _FeedPageState extends State<FeedPage> {
                                     top: 5,
                                     child: Center(
                                       child: _buildNumericIndicator(
-                                          allProperties[index]['imageUrl']),
+                                          allProperties[index]['imageUrl'],
+                                          allProperties[index]['propertyId']),
                                     ),
                                   ),
                                 ],
@@ -196,11 +200,11 @@ class _FeedPageState extends State<FeedPage> {
                                     horizontal: 10.0, vertical: 5),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           '\u20b9 ${allProperties[index]['value']}',
@@ -236,104 +240,63 @@ class _FeedPageState extends State<FeedPage> {
                                                         bottom: 8),
                                                     onPressed: () async {
                                                       setState(() {
+                                                        // isLoading = true;
                                                         if (toggleFavorite[
-                                                        allProperties[
-                                                        index][
-                                                        'propertyId']] ==
+                                                                allProperties[
+                                                                        index][
+                                                                    'propertyId']] ==
                                                             true) {
                                                           toggleFavorite[
-                                                          allProperties[
-                                                          index]
-                                                          [
-                                                          'propertyId']] =
-                                                          false;
+                                                                  allProperties[
+                                                                          index]
+                                                                      [
+                                                                      'propertyId']] =
+                                                              false;
                                                         } else {
                                                           toggleFavorite[
-                                                          allProperties[
-                                                          index]
-                                                          [
-                                                          'propertyId']] =
-                                                          true;
+                                                                  allProperties[
+                                                                          index]
+                                                                      [
+                                                                      'propertyId']] =
+                                                              true;
                                                         }
                                                       });
-                                                      await FirebaseFirestore
-                                                          .instance
-                                                          .collection('users')
-                                                          .doc(globals.uid)
-                                                          .collection(
-                                                          'property')
-                                                          .doc(allProperties[
-                                                      index]
-                                                      ['propertyId'])
-                                                          .set({
-                                                        'area':
-                                                        allProperties[index]
-                                                        ['area'],
-                                                        'value':
-                                                        allProperties[index]
-                                                        ['value'],
-                                                        'year':
-                                                        allProperties[index]
-                                                        ['year'],
-                                                        'loan':
-                                                        allProperties[index]
-                                                        ['loan'],
-                                                        'floor':
-                                                        allProperties[index]
-                                                        ['floor'],
-                                                        'property':
-                                                        allProperties[index]
-                                                        ['property'],
-                                                        'bedroom':
-                                                        allProperties[index]
-                                                        ['bedroom'],
-                                                        'bathroom':
-                                                        allProperties[index]
-                                                        ['bathroom'],
-                                                        'mobile':
-                                                        allProperties[index]
-                                                        ['mobile'],
-                                                        'facing':
-                                                        allProperties[index]
-                                                        ['facing'],
-                                                        'availability':
-                                                        allProperties[index]
-                                                        [
-                                                        'availability'],
-                                                        'furnishingDetails':
-                                                        allProperties[index]
-                                                        [
-                                                        'furnishingDetails'],
-                                                        'imageUrl':
-                                                        allProperties[index]
-                                                        ['imageUrl'],
-                                                        'areaUnit':
-                                                        allProperties[index]
-                                                        ['areaUnit'],
+                                                      var propertyRef =
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collectionGroup(
+                                                                  'property')
+                                                              .where(
+                                                                  'propertyId',
+                                                                  isEqualTo: allProperties[
+                                                                          index]
+                                                                      [
+                                                                      'propertyId'])
+                                                              .get();
+                                                      propertyRef
+                                                          .docs.first.reference
+                                                          .update({
                                                         'addToFavourite':
-                                                        toggleFavorite[
-                                                        allProperties[
-                                                        index][
-                                                        'propertyId']],
-                                                        'propertyId':
-                                                        allProperties[index]
-                                                        ['propertyId'],
+                                                            toggleFavorite[
+                                                                allProperties[
+                                                                        index][
+                                                                    'propertyId']],
                                                       });
                                                     },
                                                     icon: Icon(
                                                       toggleFavorite[allProperties[
-                                                      index][
-                                                      'propertyId']] ==
-                                                          true
+                                                                      index][
+                                                                  'propertyId']] ==
+                                                              true
                                                           ? Icons.favorite
                                                           : Icons
-                                                          .favorite_outline_rounded,
+                                                              .favorite_outline_rounded,
                                                       color: toggleFavorite[
-                                                      allProperties[
-                                                      index]
-                                                      [
-                                                      'propertyId']] ==
-                                                          true
+                                                                  allProperties[
+                                                                          index]
+                                                                      [
+                                                                      'propertyId']] ==
+                                                              true
                                                           ? Colors.pink.shade400
                                                           : Colors.black,
                                                     )),
@@ -343,7 +306,7 @@ class _FeedPageState extends State<FeedPage> {
                                                   child: Text(
                                                     'Save',
                                                     style:
-                                                    TextStyle(fontSize: 12),
+                                                        TextStyle(fontSize: 12),
                                                   ),
                                                 )
                                               ],
@@ -382,15 +345,15 @@ class _FeedPageState extends State<FeedPage> {
                                                 // padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                  BorderRadius.circular(
-                                                      10), // Rounded corners
+                                                      BorderRadius.circular(
+                                                          10), // Rounded corners
                                                 ),
                                               ),
                                               onPressed: () async {
                                                 final Uri call = Uri(
                                                     scheme: 'tel',
                                                     path:
-                                                    '+91${allProperties[index]['mobile']}');
+                                                        '+91${allProperties[index]['mobile']}');
 
                                                 if (await canLaunchUrl(call)) {
                                                   await launchUrl(call);
@@ -429,18 +392,17 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Widget _buildNumericIndicator(List<dynamic> imageList) {
+  Widget _buildNumericIndicator(List<dynamic> imageList, String propertyId) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.grey.shade200.withOpacity(0.9)
-      ),
+          color: Colors.grey.shade200.withOpacity(0.5)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '${_currentIndex + 1}/${imageList.length}',
+            '${currentIndexMap[propertyId]! + 1}/${imageList.length}',
             style: TextStyle(
               color: Colors.grey.shade800,
               fontSize: 12,
@@ -451,4 +413,55 @@ class _FeedPageState extends State<FeedPage> {
       ),
     );
   }
+
+  // Widget _buildDotIndicator(List<dynamic> imageList) {
+  //   return IntrinsicWidth(
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //         color: Colors.grey.withOpacity(0.5),
+  //         borderRadius: BorderRadius.circular(30),
+  //       ),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: imageList.asMap().entries.map((entry) {
+  //           return InkWell(
+  //             onTap: () => _carouselController.animateToPage(entry.key),
+  //             child: Container(
+  //               width: 6.0, // Adjust size for better visibility
+  //               height: 6.0,
+  //               margin:
+  //                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
+  //               decoration: BoxDecoration(
+  //                 shape: BoxShape.circle,
+  //                 color:
+  //                     (_currentIndex == entry.key ? Colors.white : Colors.grey)
+  //                         .withOpacity(0.8), // Use more prominent color
+  //               ),
+  //             ),
+  //           );
+  //         }).toList(),
+  //       ),
+  //     ),
+  //   );
+  // }
+}
+
+Widget _buildCarouselItem(BuildContext context, String imageUrl) {
+  return Builder(
+    builder: (BuildContext context) {
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: 5.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: Image.asset(
+            imageUrl,
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    },
+  );
 }

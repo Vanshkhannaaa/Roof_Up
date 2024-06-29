@@ -99,7 +99,7 @@ class SmallSearchBar extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text('Filter',style: TextStyle(
-                fontSize: 12
+                  fontSize: 12
               ),)
             ],
           )

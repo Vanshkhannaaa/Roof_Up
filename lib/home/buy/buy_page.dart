@@ -33,11 +33,7 @@ class _BuyPageState extends State<BuyPage> {
                           iconColor: Colors.blue.shade800,
                           name: 'All Properties',
                           iconData: Icons.add_home_work,
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    FeedPage(propertyType: 'All Properties')));
-                          }),
+                          onTap: () {}),
                       HomeContainer(
                           iconColor: Colors.grey.shade800,
                           name: 'Plot',
@@ -220,7 +216,6 @@ class _BuyPageState extends State<BuyPage> {
                     children: [
                       SizedBox(width: 30),
                       HomeContainer(
-                        iconColor: Colors.grey.shade700,
                           name: 'Others',
                           iconData: Icons.format_list_bulleted,
                           onTap: () {}),

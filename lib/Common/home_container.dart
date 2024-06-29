@@ -82,7 +82,6 @@ class RowValue extends StatelessWidget {
   }
 }
 
-
 class ProfileRow extends StatelessWidget {
   final String name;
   final IconData? iconData;
@@ -135,5 +134,3 @@ class ProfileRow extends StatelessWidget {
     );
   }
 }
-
-

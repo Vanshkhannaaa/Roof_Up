@@ -9,6 +9,7 @@ class SplashScreen extends StatelessWidget {
 
   Future<bool> checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString('uid')!);
     return prefs.getBool('isLoggedIn') ?? false;
   }
 
@@ -33,7 +34,7 @@ class SplashScreen extends StatelessWidget {
             }
           },
         ),
-        duration: 3000,
+        duration: 3400,
         splashIconSize: double.infinity,
         backgroundColor: Color(0xff2B64F8),
       ),

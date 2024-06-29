@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:roof_up/Common/appBar.dart';
 import '../../../Common/home_container.dart';
 import '../../../Common/search_bar.dart';
+
 
 class PlotPage extends StatefulWidget {
   const PlotPage({super.key});
@@ -14,7 +14,13 @@ class _PlotPageState extends State<PlotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(name: 'Plot',home: false),
+      appBar: AppBar(
+        title: Text('Plot',style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 20
+        ),),
+        centerTitle: true,
+      ),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -28,7 +34,7 @@ class _PlotPageState extends State<PlotPage> {
                     children: [
                       HomeContainer(
                         iconColor: Colors.green.shade800,
-                          name: 'residential\nPlot',
+                          name: 'Residential\nPlot',
                           iconData: Icons.home_rounded,
                           onTap: (){
                           }),
@@ -79,8 +85,7 @@ class _PlotPageState extends State<PlotPage> {
               width: MediaQuery.of(context).size.width,
               color: Colors.white,
               padding: EdgeInsets.only(top: 20),
-              child:CustomSearchBar())
-        ],
+              child:CustomSearchBar())        ],
       ),
     );
   }

@@ -9,10 +9,10 @@ class CustomTextField extends StatelessWidget {
 
   const CustomTextField(
       {super.key,
-        required this.title,
-        required this.hint,
-        required this.type,
-        this.controller});
+      required this.title,
+      required this.hint,
+      required this.type,
+      this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +305,6 @@ class _AreaFieldState extends State<AreaField> {
   }
 }
 
-
 class CustomDropdown extends StatefulWidget {
   final List<String> options;
   final String title;
@@ -380,7 +379,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
                 }
               },
               items:
-              widget.options.map<DropdownMenuItem<String>>((String value) {
+                  widget.options.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(

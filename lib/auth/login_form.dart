@@ -108,10 +108,9 @@ class _LoginFormState extends State<LoginForm> {
                       onPressed: (){
                         Navigator.pushReplacementNamed(context, "/home");
 
-                      },
-                    child: Text('login'.toUpperCase(),style: TextStyle(color: Colors.white),)
+                      }, child: Text('login'.toUpperCase(),style: TextStyle(color: Colors.white),)
                   )
-                )
+                  )
             ],
           ),
         )

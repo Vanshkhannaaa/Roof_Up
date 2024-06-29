@@ -1,77 +1,48 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'otp.dart';
 
-class PhoneLogin extends StatefulWidget {
-  const PhoneLogin({Key? key}) : super(key: key);
+class Details extends StatefulWidget {
+  const Details({Key? key}) : super(key: key);
 
   @override
-  State<PhoneLogin> createState() => _PhoneLoginState();
+  State<Details> createState() => _DetailsState();
 }
 
-class _PhoneLoginState extends State<PhoneLogin> {
-  final _phoneController = TextEditingController();
+class _DetailsState extends State<Details> {
+  final _nameController = TextEditingController();
   bool _isButtonLoading = false;
 
-  void _verifyPhoneNumber() async {
+  void addName() async {
     setState(() {
       _isButtonLoading = true;
     });
 
-    final phoneNumber = _phoneController.text;
+    final name = _nameController.text;
 
-    if (phoneNumber.isEmpty) {
+    if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a phone number')),
-      );
-      setState(() {
-        _isButtonLoading = false;
-      });
-      return;
-    } else if (phoneNumber.length != 10) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a valid phone number')),
+        SnackBar(content: Text('Please enter name')),
       );
       setState(() {
         _isButtonLoading = false;
       });
       return;
     }
-
     try {
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: '+91${phoneNumber}',
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          await FirebaseAuth.instance.signInWithCredential(credential);
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text('Failed to verify phone number: ${e.message}')),
-          );
-          setState(() {
-            _isButtonLoading = false;
-          });
-        },
-        codeSent: (String verificationId, int? resendToken) {
-          setState(() {
-            _isButtonLoading = false;
-          });
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => otppage(
-              phoneNumber: _phoneController.text,
-              verificationId: verificationId,
-            ),
-          ));
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          setState(() {
-            _isButtonLoading = false;
-          });
-        },
-      );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String uid = prefs.getString('uid')!;
+      await FirebaseFirestore.instance.collection("users").doc(uid).update({
+        'name': name,
+      });
+      Navigator.of(context).pushNamed('/nav');
+      setState(() {
+        _isButtonLoading = false;
+      });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An error occurred: $e')),
@@ -102,14 +73,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                 ),
                 SizedBox(height: 30),
                 Text(
-                  'Phone Number Verification',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: GoogleFonts.kanit().fontFamily,
-                  ),
-                ),
-                Text(
-                  'Enter phone number for OTP',
+                  'Enter name',
                   style: TextStyle(
                     color: Colors.grey.shade700,
                     fontSize: 13,
@@ -120,16 +84,11 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   width: MediaQuery.of(context).size.width,
                   color: Colors.white60,
                   child: TextField(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(10),
-                    ],
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
+                    controller: _nameController,
                     cursorColor: Colors.blue.shade800,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      labelText: 'Phone Number',
+                      labelText: 'name',
                       labelStyle: TextStyle(
                         fontSize: 14,
                         color: Colors.grey.shade400,
@@ -149,7 +108,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _isButtonLoading ? null : _verifyPhoneNumber,
+                    onPressed: _isButtonLoading ? null : addName,
                     style: ElevatedButton.styleFrom(
                       shadowColor: Colors.black, // Shadow color
                       elevation: 5,

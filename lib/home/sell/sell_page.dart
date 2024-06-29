@@ -3,7 +3,6 @@ import '../../Common/appBar.dart';
 import '../../Common/home_container.dart';
 import '../../Common/search_bar.dart';
 
-
 class SellPage extends StatefulWidget {
   const SellPage({super.key});
 
@@ -15,7 +14,7 @@ class _SellPageState extends State<SellPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(name:'Sell',home:false),
+      appBar: CustomAppBar(name: 'Sell',home:false),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -238,6 +237,7 @@ class _SellPageState extends State<SellPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       HomeContainer(
+
                           name: 'Theature',
                           iconData: Icons.theaters_rounded,
                           onTap: (){
@@ -245,7 +245,7 @@ class _SellPageState extends State<SellPage> {
                           }
                       ),
                       HomeContainer(
-                        iconColor: Colors.grey.shade700,
+                        iconColor: Colors.brown,
                           name: 'Others',
                           iconData: Icons.format_list_bulleted_rounded,
                           onTap: (){}
