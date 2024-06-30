@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAaa3sR1ylyA5rQmupVLcHbkDIJgOPzHBQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>809847024730</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.auribises.roofUp.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>propertyapp-c8111</string>
+	<key>STORAGE_BUCKET</key>
+	<string>propertyapp-c8111.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:809847024730:ios:e2b55c7c148936940efc63</string>
+</dict>
+</plist>
