@@ -7,6 +7,7 @@ import 'package:roof_up/Common/search_bar.dart';
 import 'package:roof_up/home/home_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../Common/globals.dart' as globals;
+import '../Common/loadingSkeleton.dart';
 import '../home/sell/summary.dart';
 
 class Saved extends StatefulWidget {
@@ -80,18 +81,26 @@ class _SavedState extends State<Saved> {
               ),
               centerTitle: true,
             ),
-            body: isLoading
-                ? CommonClass.loader(context)
-                : allProperties.isEmpty
-                    ? Center(
-                        child: Text("No property found"),
-                      )
-                    : SingleChildScrollView(
+            body: SingleChildScrollView(
                         child: Column(
                           children: [
                             SizedBox(height: 15),
                             CustomSearchBar(),
-                            SizedBox(height: 15),
+                            SizedBox(height: 20,),
+                            isLoading ?
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Loadingskeleton(),
+                                  SizedBox(height: 15),
+                                  Loadingskeleton(),
+                                ],
+                              ),
+                            )
+                                : allProperties.isEmpty
+                                ? Center(
+                              child: Text("No property found"),
+                            ) :
                             ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),

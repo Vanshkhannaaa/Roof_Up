@@ -6,9 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/Common/TextField.dart';
+import 'package:roof_up/Common/globals.dart';
 import 'package:roof_up/Common/home_container.dart';
+import 'package:roof_up/Common/property_slider.dart';
 import 'package:roof_up/home/buy/feed/photo_slider.dart';
 import 'package:roof_up/home/sell/sell_fields/sell_halls.dart';
 import 'package:roof_up/home/sell/sell_fields/sell_house.dart';
@@ -21,6 +24,7 @@ class Summary extends StatefulWidget {
   final String uid;
   final String? propertyId;
   final Map<String, dynamic>? propertyData;
+
   const Summary({
     super.key,
     required this.comingFromBuy,
@@ -33,6 +37,8 @@ class Summary extends StatefulWidget {
 }
 
 class _SummaryState extends State<Summary> {
+  String name = '';
+  String phone= '';
   bool isLoading = false;
   Map<String, dynamic> propertyData = {};
   List<dynamic> test = [];
@@ -62,8 +68,21 @@ class _SummaryState extends State<Summary> {
     ],
   };
 
+  void _fetchUserData()async{
+    SharedPreferences userId = await SharedPreferences.getInstance();
+    String? uid = userId.getString("uid");
+    var userRef = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    var userData = userRef.data();
+
+    setState(() {
+      name = userData!['name'];
+      phone = userData['phoneNumber'];
+    });
+  }
+
   @override
   void initState() {
+    _fetchUserData();
     super.initState(); // This should come before any other code
     widgetPropertyNotNull = widget.propertyData != null;
     if (widgetPropertyNotNull!) {
@@ -668,7 +687,7 @@ class _SummaryState extends State<Summary> {
                                               RowValue(
                                                   iconData:
                                                       Icons.bedroom_parent,
-                                                  title: 'bedroom',
+                                                  title: 'Bedroom',
                                                   value:
                                                       propertyData['bedroom']),
                                             ],
@@ -687,7 +706,7 @@ class _SummaryState extends State<Summary> {
                                               RowValue(
                                                   iconData:
                                                       Icons.bedroom_parent,
-                                                  title: 'bedroom',
+                                                  title: 'Bedroom',
                                                   value: widget.propertyData![
                                                       'bedroom']),
                                             ],
@@ -707,7 +726,7 @@ class _SummaryState extends State<Summary> {
                                               RowValue(
                                                   iconData:
                                                       Icons.bathtub_rounded,
-                                                  title: 'bathroom',
+                                                  title: 'Bathroom',
                                                   value:
                                                       propertyData['bathroom']),
                                             ],
@@ -726,7 +745,7 @@ class _SummaryState extends State<Summary> {
                                               RowValue(
                                                   iconData:
                                                       Icons.bathtub_rounded,
-                                                  title: 'bathroom',
+                                                  title: 'Bathroom',
                                                   value: widget.propertyData![
                                                       'bathroom']),
                                             ],
@@ -786,7 +805,7 @@ class _SummaryState extends State<Summary> {
                                               RowValue(
                                                   iconData: Icons
                                                       .table_restaurant_rounded,
-                                                  title: 'furnishingDetails',
+                                                  title: 'Furnishing Details',
                                                   value: propertyData[
                                                       'furnishingDetails']),
                                             ],
@@ -805,7 +824,7 @@ class _SummaryState extends State<Summary> {
                                               RowValue(
                                                   iconData: Icons
                                                       .table_restaurant_rounded,
-                                                  title: 'furnishingDetails',
+                                                  title: 'Furnishing Details',
                                                   value: widget.propertyData![
                                                       'furnishingDetails']),
                                             ],
@@ -847,10 +866,11 @@ class _SummaryState extends State<Summary> {
                                           ),
                                           SizedBox(height: 10),
                                           ..._buildNearbyLandmarks(),
-                                          SizedBox(height: 15),
+                                          SizedBox(height: 10),
                                         ],
                                       )
                                     : SizedBox(height: 0),
+                                Divider(),
                                 Text(
                                   "Description",
                                   style: TextStyle(
@@ -859,14 +879,136 @@ class _SummaryState extends State<Summary> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                SizedBox(height: 15),
-                                // Text(
-                                //   widget.propertyData == null
-                                //       ? propertyData['propertyDetails']
-                                //       : widget.propertyData!['propertyDetails'],
-                                //   style: TextStyle(fontSize: 16),
-                                // ),
-                                SizedBox(height: 50),
+                                SizedBox(height: 10),
+                                Text(
+                                  widget.propertyData == null
+                                      ? propertyData['propertyDetails']
+                                      : widget.propertyData!['propertyDetails'],
+                                  style: TextStyle(fontSize: 16),
+                                ),
+
+                                SizedBox(height: 10),
+                                Divider(),
+
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Contact Details",
+                                      style: TextStyle(
+                                        fontFamily: GoogleFonts.kanit()
+                                            .fontFamily,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Name :',
+                                          style: TextStyle(
+                                              fontFamily:GoogleFonts.kanit().fontFamily,
+                                              fontSize: 16
+                                          ),
+                                        ),
+                                        Text(name,
+                                          style: TextStyle(
+                                              fontSize: 16
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Phone Number :',
+                                          style: TextStyle(
+                                              fontFamily:GoogleFonts.kanit().fontFamily,
+                                              fontSize: 16
+                                          ),
+                                        ),
+                                        Text(phone,
+                                          style: TextStyle(
+                                              fontSize: 16
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Divider(),
+                                    Text(
+                                      "Report Problem",
+                                      style: TextStyle(
+                                        fontFamily: GoogleFonts.kanit()
+                                            .fontFamily,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10)
+                                                ),
+                                                backgroundColor: Colors.blue.shade800
+                                              ),
+                                                onPressed: (){},
+                                                child: Text('Sold Out',style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14
+                                                ),)
+                                            ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(10)
+                                                  ),
+                                                  backgroundColor: Colors.blue.shade800
+                                              ),
+                                              onPressed: (){
+                                                Navigator.pushNamed(context, '/report');
+                                              },
+                                              child: Text('Wrong Info',style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14
+                                              ),)
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    SizedBox(height: 10,),
+                                    Divider(),
+
+                                    Text(
+                                      "Similar Properties",
+                                      style: TextStyle(
+                                        fontFamily: GoogleFonts.kanit()
+                                            .fontFamily,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 10,),
+
+                                    PropertySlider()
+
+
+                                  ],
+                                ),
+
+                                widget.comingFromBuy?SizedBox(height:10):SizedBox(height: 60,),
                               ],
                             ),
                           ],
@@ -1005,42 +1147,6 @@ class _SummaryState extends State<Summary> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildDotIndicator() {
-    // Ensure propertyData['imageUrl'] is a List
-    List<dynamic> imageUrls = widget.propertyData == null
-        ? propertyData['imageUrl']
-        : widget.propertyData!['imageData'];
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: imageUrls.asMap().entries.map<Widget>((entry) {
-        return InkWell(
-          onTap: () => _carouselController.animateToPage(entry.key),
-          child: Container(
-            width: 6.0,
-            height: 6.0,
-            margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: (_currentIndex == entry.key ? Colors.white : Colors.grey)
-                  .withOpacity(0.8),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildCarouselItem(BuildContext context, String imageUrl) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Image.asset(
-        imageUrl,
-        fit: BoxFit.cover,
       ),
     );
   }

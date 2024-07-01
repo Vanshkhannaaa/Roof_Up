@@ -134,3 +134,66 @@ class ProfileRow extends StatelessWidget {
     );
   }
 }
+
+class ReportRow extends StatefulWidget {
+  final String name;
+  final IconData? iconData;
+
+  const ReportRow({
+    super.key,
+    required this.name,
+    required this.iconData,
+  });
+
+  @override
+  _ReportRowState createState() => _ReportRowState();
+}
+
+class _ReportRowState extends State<ReportRow> {
+  bool isChecked = false; // Initial state is false
+
+  void _handleCheckboxChange(bool? value) {
+    setState(() {
+      isChecked = value ?? false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Icon(
+              widget.iconData,
+              color: Colors.grey.shade800,
+              size: 22,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              widget.name,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.shade700,
+              ),
+            ),
+          ],
+        ),
+        Checkbox(
+          shape:RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5)
+          ),
+
+          activeColor: Colors.blue.shade800,
+          value: isChecked,
+          onChanged: (bool? newValue) {
+            setState(() {
+              isChecked = newValue ?? false;
+            });
+          },
+        ),
+      ],
+    );
+  }
+}

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/Common/common.dart';
+import 'package:roof_up/Common/loadingSkeleton.dart';
 import 'package:roof_up/home/sell/summary.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../Common/search_bar.dart';
@@ -86,19 +87,27 @@ class _FeedPageState extends State<FeedPage> {
         ),
         surfaceTintColor: Colors.white,
       ),
-      body: isLoading
-          ? CommonClass.loader(context)
-          : allProperties.isEmpty
-              ? Center(
-                  child: Text("No properties found"),
-                )
-              : Padding(
+      body: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
                         SmallSearchBar(),
                         SizedBox(height: 20),
+                        isLoading ?
+                        SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Loadingskeleton(),
+                              SizedBox(height: 15),
+                              Loadingskeleton(),
+                            ],
+                          ),
+                        )
+                            : allProperties.isEmpty
+                            ? Center(
+                          child: Text("No properties found"),
+                        ):
                         ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),

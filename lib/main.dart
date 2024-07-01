@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:roof_up/auth/details.dart';
 import 'package:roof_up/home/buy/feed/photo_slider.dart';
 import 'package:roof_up/home/sell/confetti.dart';
+import 'package:roof_up/home/sell/report.dart';
 import 'package:roof_up/home/sell/sell_fields/sell_plot/plot_sell_page.dart';
 import 'package:roof_up/home/to_let/to_let_page.dart';
 import 'package:roof_up/splash_screen.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
         '/sellhall': (context) => const SellHalls(),
         // '/slider': (context) => PhotoSlider(),
         '/spp': (context) => SellPlotPage(),
+        '/report': (context) => ReportPage(),
       },
     );
   }
