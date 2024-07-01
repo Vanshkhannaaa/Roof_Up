@@ -43,7 +43,7 @@ class _SellHouseState extends State<SellHouse> {
         text: widget.propertyData == null ? '' : widget.propertyData!['floor']);
     BedroomController = TextEditingController(
         text:
-        widget.propertyData == null ? '' : widget.propertyData!['bedroom']);
+            widget.propertyData == null ? '' : widget.propertyData!['bedroom']);
     BathroomController = TextEditingController(
         text: widget.propertyData == null
             ? ''
@@ -149,7 +149,7 @@ class _SellHouseState extends State<SellHouse> {
       if (widget.propertyData != null) {
         propertyData['imageData'] = widget.propertyData!['imageData'];
         propertyData['propertyDetails'] =
-        widget.propertyData!['propertyDetails'];
+            widget.propertyData!['propertyDetails'];
       }
 
       Navigator.of(context).push(MaterialPageRoute(
@@ -266,7 +266,7 @@ class _SellHouseState extends State<SellHouse> {
                 ),
                 CustomDropdown(
                     initialValue:
-                    furnishingDetails != '' ? furnishingDetails : null,
+                        furnishingDetails != '' ? furnishingDetails : null,
                     onChanged: (String? newValue) {
                       setState(() {
                         furnishingDetails = newValue ?? "";
