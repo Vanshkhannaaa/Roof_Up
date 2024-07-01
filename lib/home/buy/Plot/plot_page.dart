@@ -64,7 +64,9 @@ class _PlotPageState extends State<PlotPage> {
                           })
                     ],
                   ),
+
                   SizedBox(height: 15),
+
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
